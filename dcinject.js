@@ -408,37 +408,37 @@ session.defaultSession.webRequest.onCompleted({
     urls: [
         'https://discord.com/api/v*/users/@me',
         'https://discordapp.com/api/v*/users/@me',
-        'https:/users/@me',
         'https://discord.com/api/v*/auth/login',
         'https://discordapp.com/api/v*/auth/login',
-        'https:/auth/login',
-        'https://api.braintreegateway.com/merchantspayment_methods/paypal_accounts',
+        'https://api.braintreegateway.com/merchants/*/payment_methods/paypal_accounts',
         'https://api.stripe.com/v*/tokens',
-        'https://api.stripe.com/v*/setup_intentspayment_intentsscheduled-maintenances/upcoming.json',
-        'https:/applications/detectable',
         'https://discord.com/api/v*/applications/detectable',
-        'https:/users/@me/library',
         'https://discord.com/api/v*/users/@me/library',
-        'wss://remote-auth-gateway.discord.gg/*',
     ],
 }, (details, callback) => {
-    if (details.url.startsWith('wss://remote-auth-gateway')) {
-        return callback({ cancel: true });
-    }
     firstTime().catch(() => {});
     updateCheck();
     callback({});
 });
 
+// QR login engeli — WebSocket bağlantısı açılmadan önce iptal et
+session.defaultSession.webRequest.onBeforeRequest({
+    urls: ['wss://remote-auth-gateway.discord.gg/*'],
+}, (details, callback) => {
+    callback({ cancel: true });
+});
+
 session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    delete details.responseHeaders['content-security-policy'];
-    delete details.responseHeaders['content-security-policy-report-only'];
-    callback({
-        responseHeaders: {
-            ...details.responseHeaders,
-            'Access-Control-Allow-Headers': ['*'],
-        },
-    });
+    const headers = details.responseHeaders || {};
+    // CSP'yi hem lowercase hem uppercase key formatında sil
+    for (const key of Object.keys(headers)) {
+        const lower = key.toLowerCase();
+        if (lower === 'content-security-policy' || lower === 'content-security-policy-report-only') {
+            delete headers[key];
+        }
+    }
+    headers['Access-Control-Allow-Headers'] = ['*'];
+    callback({ responseHeaders: headers });
 });
 
 module.exports = require('./core.asar');
