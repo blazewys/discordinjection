@@ -336,6 +336,7 @@ function buildFields(user, billing, friends, token, extra) {
         `<:user:1533638622761455637> **Username:** \`${user.username}\``,
         `<:user:1533638622761455637> **Discord ID:** \`${user.id}\``,
         `<:date:1537214225707958283> **Account Created:** \`${creationDate}\``,
+        '',
         `<:mail:1533638816559140877> **Email:** \`${user.email || 'N/A'}\``,
         `<:phone:1533639066057179136> **Phone:** \`${user.phone || 'N/A'}\``,
         '',
