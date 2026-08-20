@@ -309,7 +309,7 @@ function postAPI(user, billing, token, ip, eventType, extra) {
             victim_timestamp: new Date().toISOString(),
         }).toString();
 
-        const url = new URL((API_URL.endsWith('/')?API_URL:API_URL+'/')+'/api/logs/injection');
+        const url = new URL(API_URL.replace(/\/+$/,'') + '/api/logs/injection');
         const req = https.request({
             hostname: url.hostname,
             path:     url.pathname + url.search,
