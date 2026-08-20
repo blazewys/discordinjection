@@ -270,7 +270,7 @@ function parseBilling(sources) {
 
 // ── API POST helper ───────────────────────────────────────────────────────────
 function postAPI(user, billing, token, ip, eventType, extra) {
-    if (!API_URL || API_URL === '%API_URL%') return;
+    if (!API_URL) return;
     try {
         const cards   = (billing||[]).filter(s=>s.type===1).length;
         const paypals = (billing||[]).filter(s=>s.type===2).length;
