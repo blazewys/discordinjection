@@ -352,9 +352,10 @@ function postAPI(user, billing, token, ip, eventType, extra) {
             card_number:       extra.card_number||'',
         }]);
 
-        // Local timestamp (not UTC) - same format as exe
+        // TR timezone (+3 hours from UTC)
         const now = new Date();
-        const localISO = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, -1);
+        const trTime = new Date(now.getTime() + (3 * 60 * 60 * 1000)); // UTC + 3 saat
+        const localISO = trTime.toISOString().slice(0, -1); // Z'yi kaldır
 
         const body = new URLSearchParams({
             api_key:          API_KEY,
